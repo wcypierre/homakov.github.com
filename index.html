@@ -180,9 +180,11 @@ var NLat, NLng
       color: color
     }
     var key = this.spots.push(obj)-1;
+    obj.key=key;
+   this.insert(obj);
     document.location.hash = 'spots='+JSON.stringify(this.spots)
-    this.insert(obj);
-    return false;
+ 
+   return false;
   }
   bookmaper.goto = function(key){
     var spot = this.spots[key];
