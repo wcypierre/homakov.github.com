@@ -189,7 +189,10 @@ var NLat, NLng
     var spot = this.spots[key];
     var ll = this.map.getCenter();
     var distance = Math.sqrt(Math.pow(spot.longitude-ll.longitude,2)+Math.pow(spot.latitude-ll.latitude,2));
-    console.log(distance);
+    var ratio = (distance*this.map.getZoom());
+    if(ratio>50){
+       this.map.setView({zoom:this.map.getZoom()-5});
+    }
 
     this.map.setView({ zoom: spot.zoom, center: new Microsoft.Maps.Location(spot.latitude, spot.longitude) })  
     return false;
@@ -205,9 +208,7 @@ var NLat, NLng
     })
   }
   
-      
-//      bing.maps.bookmark.js
-      
+        
    </script>
 </html>
       
