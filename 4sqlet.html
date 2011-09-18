@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-check these out:
-* <a href="4sqlet.html">4sq app</a><br>
-=======
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
    <head>
@@ -186,25 +182,18 @@ var NLat, NLng
     var key = this.spots.push(obj)-1;
     obj.key=key;
    this.insert(obj);
-    document.location.hash = 'spots='+encodeURI(JSON.stringify(this.spots))
+    document.location.hash = 'spots='+JSON.stringify(this.spots)
+ 
    return false;
   }
   bookmaper.goto = function(key){
     var spot = this.spots[key];
-    var ll = this.map.getCenter();
-    var distance = Math.sqrt(Math.pow(spot.longitude-ll.longitude,2)+Math.pow(spot.latitude-ll.latitude,2));
-    var ratio = (distance*this.map.getZoom());
-    if(ratio>50){
-       this.map.setView({zoom:this.map.getZoom()-5});
-    }
-
     this.map.setView({ zoom: spot.zoom, center: new Microsoft.Maps.Location(spot.latitude, spot.longitude) })  
     return false;
   }
   var hash = document.location.hash.split('spots=')[1];
   if(hash){
-    
-    bookmaper.spots = JSON.parse(decodeURI(hash));
+    bookmaper.spots = JSON.parse(hash);
     
     bookmaper.spots.forEach(function(v,k){
         v.key = k;
@@ -212,8 +201,9 @@ var NLat, NLng
     })
   }
   
-        
+      
+//      bing.maps.bookmark.js
+      
    </script>
 </html>
       
->>>>>>> 68379d7f03222c317ef74dc05d69e40ef7d2676a
