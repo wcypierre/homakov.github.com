@@ -291,7 +291,7 @@ var NLat, NLng
     },2000)
     return false;
   }
-  var hash = document.location.hash.split('spots=')[1];
+  var hash = decodeURI(document.location.hash.split('spots=')[1]);
   if(hash){
     bookmaper.spots = JSON.parse(hash);
     bookmaper.spots.forEach(function(v,k){
