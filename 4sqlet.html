@@ -9,6 +9,8 @@
 
 <a style="position:absolute; top:30px;right:50%;z-index:1000;background-color:yellow" id="notification"></a>
 
+<a style="position:absolute;top:10px;right:100px;z-index:1000;background-color:red" onclick="return ownCreds()" id="owncreds">use own apikeys!</a>
+
 <a style="position:absolute; top:0px;right:0px;z-index:1000" href="#" onclick="return bookmaper.add(prompt('Any comments?'));"><img src='b.gif'></a>
 
 <div style="position:absolute; top:42px;right:0px;z-index:1000; width:42px;" id="bookmaper">
@@ -54,19 +56,24 @@ var mapEntity = {
   latlngFixed:6,
   interval:500
 }
+/*
 if(sessionStorage){
   if(sessionStorage['creds']=='no'){
     
   }else{
+*/
+function ownCreds(){  
   if(confirm("Would you like to use own CLIENT and SECRET(due to 5000 limit per hour)? Get them at https://foursquare.com/oauth/")){
     lib4sq.CLIENT = prompt('CLIENT ID');
     lib4sq.SECRET = prompt('CLIENT SECRET');
-  }else{
+  }
+}
+  /*else{
     sessionStorage['creds']='no';
   }
   }
 }
-
+*/
 function insertPipeLL(fetch){
   if(fetched[fetch]){
     return true;
