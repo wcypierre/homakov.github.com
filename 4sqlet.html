@@ -279,7 +279,7 @@ var NLat, NLng
     this.spots.forEach(function(v,k){
       hashspots.push(objScheme.encode(v,'spot'));
     });
-    document.location.hash = 'spots='+JSON.stringify(hashspots)
+    document.location.hash = 'spots='+encodeURIComponent(JSON.stringify(hashspots))
     return false;
   }
   bookmaper.goto = function(key){
@@ -291,8 +291,9 @@ var NLat, NLng
     },2000)
     return false;
   }
-  var hash = decodeURI(document.location.hash.split('spots=')[1]);
+  var hash = (document.location.hash.split('spots=')[1]);
   if(hash){
+    hash = decodeURI(hash);
     bookmaper.spots = JSON.parse(hash);
     bookmaper.spots.forEach(function(v,k){
         bookmaper.spots[k] = objScheme.decode(v,'spot');
