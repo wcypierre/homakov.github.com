@@ -7,12 +7,29 @@ insertImg = function(top,left,zoom){
   if(top>0 && left>0){
     var el = document.createElement('img');
     el.style.position = 'absolute';  
-    var offset = -1;
+    var offset = 0;
     el.style.top = (top-LatLng[0] - offset)*256+'px';
     el.style.left = (left-LatLng[1] - offset)*256+'px';
     el.src = "http://mt1.google.com/vt/x="+left+"&y="+top+"&z="+zoom;
+    el.alt = "loading...";
     container.appendChild(el);
   }
+}
+
+
+
+function disableSelection(target){
+
+    if (typeof target.onselectstart!="undefined") //IE route
+        target.onselectstart=function(){return false}
+
+    else if (typeof target.style.MozUserSelect!="undefined") //Firefox route
+        target.style.MozUserSelect="none"
+
+    else //All other route (ie: Opera)
+        target.onmousedown=function(){return false}
+
+    target.style.cursor = "default"
 }
 
 id = document.getElementById.bind(document);
@@ -45,8 +62,8 @@ var compute = function(){
 window.onload = function(){
   window.container = id('canvas');
   compute();
-  id('lat').onchange = compute;
-  id('lng').onchange = compute;
+  id('lat').oninput = compute;
+  id('lng').oninput = compute;
   id('zoom').onchange = compute;
 };
 </script>
@@ -54,29 +71,26 @@ window.onload = function(){
 #canvas{
   width:100%;
   height:100%;
+  overflow:hidden;
 }
 </style>
 </head>
 <body><div class="controls" style="position:fixed;z-index:1000;right:0px;top:0px;"><form>
-  <input id="zoom" type="range"
+ <input id="lat" type="number"
+       min="0"
+       step="1"
+       value="3"      
+       style='width:100px' > LAT<input id="lng" type="number"
+       min="0"
+       step="1"
+       value="3"
+            style='width:100px'   > LNG 
+             <input id="zoom" type="range"
        min="2"
        max="21"
        step="1"
        value="3"
        style='width:600px' > ZOOM<br />
-  <input id="lat" type="range"
-       min="0"
-       max="10"
-       step="1"
-       value="6"
-       style='width:600px'
-       > LAT<br />
-  <input id="lng" type="range"
-       min="0"
-       max="10"
-       step="1"
-       value="6"
-       style='width:600px'
-       > LNG<br />
+  
 </form></div><div id="canvas"></div></body>
 </html
