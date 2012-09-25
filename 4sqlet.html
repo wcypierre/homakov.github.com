@@ -293,7 +293,7 @@ var NLat, NLng
   }
   var hash = (document.location.hash.split('spots=')[1]);
   if(hash){
-    hash = decodeURI(hash);
+    hash = decodeURIComponent(hash);
     bookmaper.spots = JSON.parse(hash);
     bookmaper.spots.forEach(function(v,k){
         bookmaper.spots[k] = objScheme.decode(v,'spot');
