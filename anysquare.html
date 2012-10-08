@@ -1,0 +1,30 @@
+<script>
+update = function(){
+  var i =document.getElementById('ifr');
+  i.src = url_input.value;
+  i.style.height = y2_input.value;
+  i.style.width = x2_input.value;
+
+  x_sq.style.height = y_input.value;
+  x_sq.style.width = x2_input.value;
+
+  y_sq.style.height = y2_input.value;
+  y_sq.style.width = x_input.value;
+}
+window.onload = update;
+</script>
+
+
+Any Square: type coordinates and "extract" any square from any XFO-less website. <a onclick="alert(div.innerHTML);" href="#">Get HTML</a>
+
+<p>URL: <input id="url_input" onchange="update()" value="http://egorhomakov.com"></p>
+<p>X: <input id="x_input" onchange="update()" value="1"></p>
+<p>Y: <input id="y_input" onchange="update()" value="1"></p>
+<p>X2: <input id="x2_input" onchange="update()" value="400"></p>
+<p>Y2: <input id="y2_input" onchange="update()" value="400"></p>
+
+<div id="div">
+<div id="x_sq" style="z-index:10; position:absolute; background-color:white;"></div>
+<div id="y_sq" style="z-index:10; position:absolute; background-color:white;"></div>
+<iframe id="ifr" height="400" width="400" sandbox="allow-forms" scrolling="no" seamless="seamless" src="http://m.vk.com/" style="background-color: transparent; border: 0px none transparent; overflow: hidden; padding: 0px;" width="300"></iframe>
+</div>
