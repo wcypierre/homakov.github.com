@@ -15,7 +15,8 @@ window.onload = update;
 </script>
 
 
-Any Square: type coordinates and "extract" any square from any XFO-less website. <a onclick="alert(div.innerHTML);" href="#">Get HTML</a>
+Any Square: type coordinates and "extract" any square from any XFO-less website.<br>
+ <a onclick="alert(div.innerHTML);" href="#">Get HTML</a>
 
 <p>URL: <input id="url_input" onchange="update()" value="http://egorhomakov.com"></p>
 <p>X: <input id="x_input" onchange="update()" value="1"></p>
@@ -26,5 +27,5 @@ Any Square: type coordinates and "extract" any square from any XFO-less website.
 <div id="div">
 <div id="x_sq" style="z-index:10; position:absolute; background-color:white;"></div>
 <div id="y_sq" style="z-index:10; position:absolute; background-color:white;"></div>
-<iframe id="ifr" height="400" width="400" sandbox="allow-forms" scrolling="no" seamless="seamless" src="http://m.vk.com/" style="background-color: transparent; border: 0px none transparent; overflow: hidden; padding: 0px;" width="300"></iframe>
+<iframe id="ifr" height="500" width="500" sandbox="allow-forms" scrolling="no" seamless="seamless" src="http://m.vk.com/" style="background-color: transparent; border: 0px none transparent; overflow: hidden; padding: 0px;"></iframe>
 </div>
