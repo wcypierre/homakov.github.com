@@ -1,5 +1,10 @@
 <form action="?" method="post">
 <input name='user'>
-<input name='pass' type='password'>
+<input name='pass' id="pass" type='password'>
 <input type='submit'>
 </form>
+<p>If you save passwords in your browser and the service has XSS - attacker can steal you REAL password via XSS easily!</p>
+
+<p>1. type any username and pass. submit</p>
+<p>2. you should see a top bar in your browser "Do you want Google Chrome to save your password".. - click yes(github-pages disallows POSTs but we don't care. open this page again)</p>
+<p>3. now you see yellow fields above. your username and password are prefilled. and accessible from JS! <a href="javascript:alert(pass.value)">CLICK HERE TO SEE YOUR PASSWORD.</a></p>
