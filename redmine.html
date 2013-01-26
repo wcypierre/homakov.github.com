@@ -7,13 +7,14 @@ var leak = function(){
   document.body.appendChild(x)
 }
 var leak_issues = function(g){
-  alert('alright!')
   document.getElementById('result').innerHTML = JSON.stringify(g)
 }
 </script>
+<form onsubmit="leak(); return false;">
 <input id="base" name="base" placeholder="e.g. http://www.redmine.org">
-<input type="submit" onclick="leak">
+<input type="submit">
+</form>
 <br />
-<pre id="result">
+<div id="result">
 ...
-</pre></body></html>
+</div></body></html>
