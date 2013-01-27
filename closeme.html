@@ -1,0 +1,12 @@
+<html><body>
+<script>
+var boom = function(){
+  setTimeout(function(){
+  	parent.close2()
+  	window.close()
+  }, 500)
+}
+</script>
+
+<button style="top:300px;left:300px" onmouseover="boom()">Close!</button>
+</body></html>
