@@ -4,10 +4,10 @@ details = 'width=350,height=270,toolbar=no,status=no,scrollbars=no,location=no,m
 url = 'https://twitter.com/intent/tweet?status=Weird%20clickjacking%20on%20http://homakov.github.com/twowins.html%20via%20@homakov'
 close2=function(){
   setTimeout(function(){
-  	x2.close()
+  	window.x2.close()
   }, 1000);
 }
-x=window.open(url,'h',details)
-x2=window.open('/closeme.html','oh',details)
+var x2 = window.open(url,'h',details)
+var x = window.open('/closeme.html','oh',details)
 </script>
 </body></html>
