@@ -1,10 +1,10 @@
 <html><body>
-This is only PoC. Type smth like oijfowijefohwqe and your real handle on Facebook e.g. http://facebook.com/<b>egor.homakov</b> and see how detector work. It's pretty slow (<b>20 seconds</b> to be sure) history object is changed as soon as full page has been loaded. <br>
+This is only PoC. Type smth like oijfowijefohwqe and your real handle on Facebook e.g. http://facebook.com/<b>egor.homakov</b> and see how detector works. It's pretty slow (<b>20 seconds</b> to be sure) history object is changed as soon as full page has been loaded. <br>
 <br>
-In production exploit I could invent something for fast brute, but PoC is interesting on itself. And, yeah, you don't need to allow Popups in Chrome - because Popup in Chrome are opened in fact and work in background. <b>Just wait...</b>
+In production exploit I could invent something for fast brute and history.forward(), but PoC is interesting on itself. And, yeah, you don't need to allow Popups in Chrome - because Popup in Chrome get opened in fact and nicely work in background. <b>Just wait...</b>
 <br>
 <br>
-P.S. Make sure to reload page after each try. I didn't debug it, PoC is very simple. <b>tested only in chrome</b> And if you don't use chrome it is your personal problem.
+P.S. Make sure to <b>reload</b> the page after each try. I didn't debug it, PoC is very simple. <b>tested only in chrome</b> if you don't use chrome it is your personal problem.
 <script>
 window.onmessage=function(e){
   if(await){
