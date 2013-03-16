@@ -1,0 +1,63 @@
+
+<script>
+
+var wins = []
+var timeout = 9000;
+
+var check_redirect = function(base, cb, assigner){
+  var id = wins.length;
+
+  wins[id] = {
+    w: window.open('data:text/html,<script>opener.postMessage({result: false,id:'+id+'},"*")<'+'/script>'),
+    started: false,
+    cb: cb
+  }
+
+  setTimeout(function(){
+    wins[id].w.location=('data:text/html,<script>opener.postMessage({result: true,id:'+id+'},"*")<'+'/script>');
+  },10)
+
+  setTimeout(function(){
+    wins[id].w.location = base;
+
+    setTimeout(function(){
+      console.log('start', wins[id].started = new Date)
+
+      if(assigner){
+        assigner(wins[id].w);
+      }else{
+        // check exactly same URL
+        wins[id].w.location = base+'#';
+      }
+      setTimeout(function(){
+        wins[id].w.history.go(-2);
+      },10)
+    },timeout)
+  },50)
+}
+
+window.onmessage=function(e){
+  console.log('Received: ', e.data)
+
+  if(wins[e.data.id].started){
+    console.log('Processing time (ms): ', new Date - wins[e.data.id].started)
+    wins[e.data.id].cb(e.data);
+    wins[e.data.id].w.history.go(e.data.result ? 1 : 2)
+  }
+}
+</script>
+<pre>
+
+check_redirect('https://github.com/notifications', function(result){
+  console.log('Logged in on github ',result.result);
+})
+
+check_redirect('https://www.facebook.com/messages', function(result){
+  console.log('Logged in on fb ',result.result);
+})
+
+check_redirect('https://www.facebook.com/dialog/oauth?client_id=114545895322903&redirect_uri=https%3A%2F%2Fm.facebook.com', function(result){
+  console.log('authorized app ',result.result);
+})
+
+</pre>
