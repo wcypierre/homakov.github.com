@@ -15,7 +15,7 @@ var check_redirect = function(base, cb, assigner){
 
   setTimeout(function(){
     wins[id].w.location=('data:text/html,<script>opener.postMessage({result: true,id:'+id+'},"*")<'+'/script>');
-  },50)
+  },100)
 
   setTimeout(function(){
     wins[id].w.location = base;
@@ -31,9 +31,9 @@ var check_redirect = function(base, cb, assigner){
       }
       setTimeout(function(){
         wins[id].w.history.go(-2);
-      },10)
+      },100)
     },timeout)
-  },100)
+  },200)
 }
 
 window.onmessage=function(e){
