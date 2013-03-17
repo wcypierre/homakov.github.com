@@ -46,7 +46,7 @@ var check_redirect = function(base, cb, assigner){
         if(direct_history){
           wins[id].w.history.go(-2);
         }else{
-          wins[id].w.location = 'data:text/html,<script>history.go(-3)<'+'/script>'
+          wins[id].w.location = '/go_back.html'
         }
       },100)
     },timeout)
