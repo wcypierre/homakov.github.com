@@ -127,7 +127,7 @@ check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt
 
 <hr/>
 <h1>414 and X-Frame-Options based detection</h1>
-
+<pre>
 var a='';
 for(var i=0;i<50000;i++){a+='=';}
 
@@ -143,4 +143,4 @@ var cb=function(){
 a='https://www.facebook.com/messages/new?'+a;
 console.log(a.length);
 document.write('<iframe onload="cb()" src="'+a+'"></iframe>')
-
+</pre>
