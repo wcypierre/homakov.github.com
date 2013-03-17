@@ -38,13 +38,13 @@ var check_redirect = function(base, cb, assigner){
   var id = wins.length;
 
   wins[id] = {
-    w: window.open(path_for(false,id)),
+    w: window.open(path_for(1,id)),
     started: false,
     cb: cb
   }
 
   setTimeout(function(){
-    wins[id].w.location=path_for(true,id);
+    wins[id].w.location=path_for(2,id);
   },data_timeout)
 
   setTimeout(function(){

@@ -1,2 +1,2 @@
-<script>r=location.hash.split(',');
+<script>r=location.hash.slice(1).split(',');
 opener.postMessage({result: r[0],id:r[1]},"*")</script>
