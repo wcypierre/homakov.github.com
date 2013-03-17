@@ -8,12 +8,15 @@ var data_timeout = 2000;
 var full_debug = false;
 
 window.onmessage=function(e){
-  if(full_debug) debug('Received: '+ e.data.result + ' for '+e.data.id)
+  var guess = e.data.result == '2'
+
+  if(full_debug) debug('Received: '+ guess + ' for '+e.data.id)
 
   if(wins[e.data.id].started){
-    if(full_debug) debug('Processing time (ms): '+ (new Date - wins[e.data.id].started))
+    if(full_debug){
+      debug('Processing time (ms): '+ (new Date - wins[e.data.id].started))
+    }
 
-    var guess = e.data.result == '2'
     wins[e.data.id].cb(guess);
     //optional
     //wins[e.data.id].w.close()
