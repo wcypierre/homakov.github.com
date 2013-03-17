@@ -8,16 +8,17 @@ var data_timeout = 2000;
 var full_debug = false;
 
 window.onmessage=function(e){
-  var guess = e.data.result == '2'
+  var guess = e.data.result == '2';
+  var id = parseInt(e.data.id);
 
-  if(full_debug) debug('Received: '+ guess + ' for '+e.data.id)
+  if(full_debug) debug('Received: '+ guess + ' for '+id)
 
-  if(wins[e.data.id].started){
+  if(wins[id].started){
     if(full_debug){
-      debug('Processing time (ms): '+ (new Date - wins[e.data.id].started))
+      debug('Processing time (ms): '+ (new Date - wins[id].started))
     }
 
-    wins[e.data.id].cb(guess);
+    wins[id].cb(guess);
     //optional
     //wins[e.data.id].w.close()
     //http://www.whatwg.org/specs/web-apps/current-work/#security-window
@@ -50,7 +51,8 @@ var check_redirect = function(base, cb, assigner){
     wins[id].w.location = base;
 
     setTimeout(function(){
-      if(full_debug) debug('Started at '+ (wins[id].started = new Date))
+      wins[id].started = new Date;
+      if(full_debug) debug('Started at '+ wins[id].started);
 
       if(assigner){
         assigner(wins[id].w);
