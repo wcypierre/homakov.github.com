@@ -84,23 +84,23 @@ var run = function(){
 <textarea id="ev" style="width:600px;height:200px;">
 
 check_redirect('https://github.com/notifications', function(guess){
-  debug('Logged in on github — '+ (guess ? 'yes' : 'no'));
+  debug('Logged in on github: '+ (guess ? 'yes' : 'no'));
 })
 
 check_redirect('https://www.facebook.com/messages/new', function(guess){
-  debug('Logged in on fb — '+ (guess ? 'yes' : 'no'));
+  debug('Logged in on fb: '+ (guess ? 'yes' : 'no'));
 })
 
 check_redirect('https://plus.google.com/photos/instantupload', function(guess){
-  debug('Logged in on google+ — '+ (guess ? 'yes' : 'no'));
+  debug('Logged in on google+: '+ (guess ? 'yes' : 'no'));
 })
 
 check_redirect('https://twitter.com/following', function(guess){
-  debug('Logged in on twitter — '+ (guess ? 'yes' : 'no'));
+  debug('Logged in on twitter: '+ (guess ? 'yes' : 'no'));
 })
 
 check_redirect('http://vk.com/friends', function(guess){
-  debug('Logged in on vk — '+ (guess ? 'yes' : 'no'));
+  debug('Logged in on vk: '+ (guess ? 'yes' : 'no'));
 })
 
 
@@ -113,11 +113,11 @@ Other examples (you can copy code to textarea and press Run or simply use firebu
 
 
 check_redirect('https://twitter.com/PROTECTED/favorites', function(guess){
-  debug('Has access to protected account — '+ (guess ? 'yes' : 'no'));
+  debug('Has access to protected account: '+ (guess ? 'yes' : 'no'));
 })
 
 check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt('choose app, e.g. 114545895322903'))+'&redirect_uri=https%3A%2F%2Fm.facebook.com', function(guess){
-  debug('Authorized app '+tryapp+' — '+(guess ? 'no' : 'yes'));
+  debug('Authorized app '+tryapp+'  '+(guess ? 'no' : 'yes'));
 })
 </pre>
 <hr/>
