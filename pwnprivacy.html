@@ -69,13 +69,14 @@ var check_redirect = function(base, cb, assigner){
 var run = function(){
   window.eval(ev.value)
 }
-window.onload = run;
+
+//window.onload = run;
 
 </script>
 
 <br><a href=# onclick="run()">Run</a>
 <br>
-<textarea id=ev style="width:600px;height:200px;">
+<textarea id="ev" style="width:600px;height:200px;">
 
 check_redirect('https://github.com/notifications', function(guess){
   debug('Logged in on github — '+ (guess ? 'yes' : 'no'));
@@ -85,7 +86,7 @@ check_redirect('https://www.facebook.com/messages/new', function(guess){
   debug('Logged in on fb — '+ (guess ? 'yes' : 'no'));
 })
 
-check_redirect('https://plus.google.com/stream', function(guess){
+check_redirect('https://plus.google.com/photos/instantupload', function(guess){
   debug('Logged in on google+ — '+ (guess ? 'yes' : 'no'));
 })
 
