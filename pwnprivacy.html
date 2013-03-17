@@ -4,8 +4,6 @@ onload-based
 
 X-Frame-Options-based
 
-
-
 history-based
 <script>
 
@@ -13,8 +11,6 @@ var wins = []
 var timeout = 9000;
 var direct_history = false;
 var data_timeout = 2000;
-
-
 
 window.onmessage=function(e){
   debug('Received: '+ e.data.result + ' for '+e.data.id)
@@ -25,6 +21,8 @@ window.onmessage=function(e){
     var guess = e.data.result == '2'
     wins[e.data.id].cb(guess);
     //optional
+    //wins[e.data.id].w.close()
+    //http://www.whatwg.org/specs/web-apps/current-work/#security-window
     //wins[e.data.id].w.history.go(guess ? 1 : 2)
   }
 }
@@ -81,7 +79,7 @@ var check_redirect = function(base, cb, assigner){
 <b><div id=deb></div></b>
 
 <pre>
-Examples:
+Examples (you can copy code to textarea and press Run or simply use firebug/web inspector):
 
 check_redirect('https://github.com/notifications', function(guess){
   debug('Logged in on github — '+ (guess ? 'yes' : 'no'));
@@ -91,12 +89,20 @@ check_redirect('https://www.facebook.com/messages/new', function(guess){
   debug('Logged in on fb — '+ (guess ? 'yes' : 'no'));
 })
 
-check_redirect('https://www.facebook.com/messages/'+(tryname=prompt('choose handle of person you talked to on fb')), function(guess){
-  debug('Talked with '+tryname+' — '+ (guess ? 'yes' : 'no'));
+check_redirect('https://plus.google.com/stream', function(guess){
+  debug('Logged in on google+ — '+ (guess ? 'yes' : 'no'));
+})
+
+check_redirect('https://twitter.com/i/connect', function(guess){
+  debug('Logged in on twitter — '+ (guess ? 'yes' : 'no'));
+})
+
+check_redirect('https://twitter.com/PROTECTED/favorites', function(guess){
+  debug('Has access to protected account — '+ (guess ? 'yes' : 'no'));
 })
 
 check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt('choose app, e.g. 114545895322903'))+'&redirect_uri=https%3A%2F%2Fm.facebook.com', function(guess){
   debug('Authorized app '+tryapp+' — '+(guess ? 'no' : 'yes'));
 })
-
 </pre>
+<hr/>
