@@ -1,2 +1,9 @@
-<script>r=location.hash.slice(1).split(',');
-opener.postMessage({result: r[0],id:r[1]},"*")</script>
+<script>
+r=location.hash.slice(1)
+if(r=='3'){
+  history.go(-3);
+}else{
+  r=r.split(',');
+  opener.postMessage({result: r[0],id:r[1]},"*");
+}
+</script>
