@@ -1,10 +1,4 @@
-<p>URL Detection</p>
-
-onload-based
-
-X-Frame-Options-based
-
-history-based
+<h1>URL and redirection detection</h1>
 <script>
 
 var wins = []
@@ -100,7 +94,8 @@ check_redirect('https://twitter.com/i/connect', function(guess){
 })
 
 </textarea>
-<b><div id=deb></div></b>
+
+<b><div id="deb"></div></b>
 
 <pre>
 Other examples (you can copy code to textarea and press Run or simply use firebug/web inspector):
@@ -115,3 +110,4 @@ check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt
 })
 </pre>
 <hr/>
+<h1>Clickjacking URL-change detection</h1>
