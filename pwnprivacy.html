@@ -91,8 +91,12 @@ check_redirect('https://www.facebook.com/messages/new', function(guess){
   debug('Logged in on fb — '+ (guess ? 'yes' : 'no'));
 })
 
-check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt('choose app, e.g. 114545895322903'))+'&redirect_uri=https%3A%2F%2Fm.facebook.com', function(guess){
-  debug('Authorized app '+tryapp+' — '+(guess ? 'yes' : 'no'));
+check_redirect('https://www.facebook.com/messages/'+(tryname=prompt('choose handle of person you talked to on fb')), function(guess){
+  debug('Talked with '+tryname+' — '+ (guess ? 'yes' : 'no'));
 })
-https://www.facebook.com/messages/name
+
+check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt('choose app, e.g. 114545895322903'))+'&redirect_uri=https%3A%2F%2Fm.facebook.com', function(guess){
+  debug('Authorized app '+tryapp+' — '+(guess ? 'no' : 'yes'));
+})
+
 </pre>
