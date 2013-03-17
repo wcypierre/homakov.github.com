@@ -1,4 +1,12 @@
+<p>URL Detection</p>
 
+onload-based
+
+X-Frame-Options-based
+
+
+
+history-based
 <script>
 
 var wins = []
@@ -7,15 +15,17 @@ var direct_history = false;
 var data_timeout = 500;
 
 window.onmessage=function(e){
-  console.log('Received: ', e.data)
+  debug('Received: '+ e.data)
 
   if(wins[e.data.id].started){
-    console.log('Processing time (ms): ', new Date - wins[e.data.id].started)
+    debug('Processing time (ms): '+ (new Date - wins[e.data.id].started))
     wins[e.data.id].cb(e.data);
     wins[e.data.id].w.history.go(e.data.result ? 1 : 2)
   }
 }
-
+var debug=function(d){
+  deb.innerHTML+="<br>"+d;
+}
 
 var check_redirect = function(base, cb, assigner){
   var id = wins.length;
@@ -34,7 +44,7 @@ var check_redirect = function(base, cb, assigner){
     wins[id].w.location = base;
 
     setTimeout(function(){
-      console.log('start', wins[id].started = new Date)
+      debug('Started at '+ (wins[id].started = new Date))
 
       if(assigner){
         assigner(wins[id].w);
@@ -54,10 +64,17 @@ var check_redirect = function(base, cb, assigner){
 }
 
 </script>
+
+<br><a href=# onclick=eval(ev.value)>Run</a>
+<br>
+<textarea id=ev style="width:600px;height:200px;"></textarea>
+<b><div id=deb></div></b>
+
 <pre>
+Examples:
 
 check_redirect('https://github.com/notifications', function(result){
-  console.log('Logged in on github ',result.result);
+  debug('Logged in on github '+result.result);
 })
 
 check_redirect('https://www.facebook.com/messages/new', function(result){
@@ -67,5 +84,5 @@ check_redirect('https://www.facebook.com/messages/new', function(result){
 check_redirect('https://www.facebook.com/dialog/oauth?client_id=114545895322903&redirect_uri=https%3A%2F%2Fm.facebook.com', function(result){
   console.log('authorized app ',result.result);
 })
-https://www.facebook.com/messages/nir.goldshlager
+https://www.facebook.com/messages/name
 </pre>
