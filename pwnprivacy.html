@@ -24,8 +24,8 @@ window.onmessage=function(e){
 
     var guess = e.data.result == '2'
     wins[e.data.id].cb(guess);
-
-    wins[e.data.id].w.history.go(guess ? 1 : 2)
+    //optional
+    //wins[e.data.id].w.history.go(guess ? 1 : 2)
   }
 }
 var debug=function(d){
