@@ -84,11 +84,11 @@ var check_redirect = function(base, cb, assigner){
 Examples:
 
 check_redirect('https://github.com/notifications', function(guess){
-  debug('Logged in on github '+ guess ? 'yes' : 'no');
+  debug('Logged in on github '+ (guess ? 'yes' : 'no'));
 })
 
 check_redirect('https://www.facebook.com/messages/new', function(guess){
-  console.log('Logged in on fb '+ guess ? 'yes' : 'no');
+  console.log('Logged in on fb '+ (guess ? 'yes' : 'no'));
 })
 
 check_redirect('https://www.facebook.com/dialog/oauth?client_id=114545895322903&redirect_uri=https%3A%2F%2Fm.facebook.com', function(result){
