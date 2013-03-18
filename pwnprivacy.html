@@ -7,9 +7,10 @@ var direct_history = false;
 var data_timeout = 2000;
 var full_debug = false;
 
-var postback = function(result,id){
-  var guess = result == '2';
-  var id = parseInt(id);
+var postback = function(data){
+  var data = data.split(',')
+  var guess = data[0] == '2';
+  var id = parseInt(data[1]);
 
   if(wins[id].started){
     if(full_debug){
@@ -81,7 +82,7 @@ var check_redirect = function(base, cb, assigner){
         resp = w.location.search.slice(1);
         if(full_debug) debug('Received: '+resp);
 
-        postback( resp.split(',') );
+        postback( resp );
 
       },2000)
     },timeout)
