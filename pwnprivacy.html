@@ -74,13 +74,17 @@ var check_redirect = function(base, cb, assigner){
         w.location = path_for('3,'+id)
       }
       },100)
-
-      setTimeout(function(){
-        resp = w.location.hash.slice(1);
+      var checker = function(){
+        resp = w.location.hash;
+        if(resp){
         //if(full_debug) debug('Received: '+resp);
-        postback( resp );
+          postback( resp.slice(1) );
+        }else{
+          setTimeout(checker,1000)
+        }
+      }
+      checker();
 
-      },5000)
     },timeout)
   },data_timeout * 2)
 }
