@@ -68,7 +68,7 @@ var check_redirect = function(base, cb, assigner){
         // check exactly same URL
         wins[id].w.location = base+'#';
       }
-      
+
       setTimeout(function(){
       if(direct_history){
         wins[id].w.history.go(-2);
@@ -80,7 +80,7 @@ var check_redirect = function(base, cb, assigner){
       setTimeout(function(){
         postback( wins[id].w.location.search.slice(1).split(',') );
 
-      },1000)
+      },2000)
     },timeout)
   },data_timeout*2)
 }
@@ -97,7 +97,7 @@ var run = function(){
 <br><a href=javascript:void(0) onclick="run()">Run</a>
 <br>
 <textarea id="ev" style="width:600px;height:200px;">
-direct_history=true;
+//direct_history=true;
 full_debug=true;
 timeout=10000;
 
