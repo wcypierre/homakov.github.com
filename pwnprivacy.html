@@ -30,8 +30,13 @@ var debug=function(d){
 }
 
 var path_for = function(data){
-  return '/postback.html?'+data;
-  //'data:text/html,<script>opener.postMessage({result: false,id:'+id+'},"*")<'+'/script>'
+  if(data=='3'){
+    return 'data:text/html,<script>history.go(-3);<'+'/script>'
+  }else{
+    return '/postback.html?'+data;
+
+  }
+    //'data:text/html,<script>opener.postMessage({result: false,id:'+id+'},"*")<'+'/script>'
 }
 
 var check_redirect = function(base, cb, assigner){
@@ -101,6 +106,9 @@ check_redirect('https://twitter.com/following', function(guess){
 
 check_redirect('http://vk.com/friends', function(guess){
   debug('Logged in on vk: '+ (guess ? 'yes' : 'no'));
+})
+check_redirect('http://my.deviantart.com/messages/', function(guess){
+  debug('Logged in on devianart: '+ (guess ? 'yes' : 'no'));
 })
 
 
