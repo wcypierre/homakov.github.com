@@ -1,9 +1,8 @@
 <script>
-r=location.search.slice(1)
-if(r=='3'){
+r=location.search.slice(1).split(',')
+if(r[0]=='3'){
   history.go(-3);
 }else{
-  //r=r.split(',');
   //opener.postMessage({result: r[0],id:r[1]},"*");
 }
 </script>
