@@ -11,8 +11,6 @@ var postback = function(result,id){
   var guess = result == '2';
   var id = parseInt(id);
 
-  if(full_debug) debug('Received: '+ guess + ' for '+id)
-
   if(wins[id].started){
     if(full_debug){
       debug('Processing time (ms): '+ (new Date - wins[id].started))
@@ -45,18 +43,20 @@ var path_for = function(data){
 var check_redirect = function(base, cb, assigner){
   var id = wins.length;
 
+  var w = window.open(path_for('1,'+id));
+
   wins[id] = {
-    w: window.open(path_for('1,'+id)),
+    w: w,
     started: false,
     cb: cb
   }
 
   setTimeout(function(){
-    wins[id].w.location=path_for('2,'+id);
+    w.location=path_for('2,'+id);
   },data_timeout)
 
   setTimeout(function(){
-    wins[id].w.location = base;
+    w.location = base;
 
     setTimeout(function(){
       wins[id].started = new Date;
@@ -66,23 +66,26 @@ var check_redirect = function(base, cb, assigner){
         assigner(wins[id].w);
       }else{
         // check exactly same URL
-        wins[id].w.location = base+'#';
+        w.location = base+'#';
       }
 
       setTimeout(function(){
       if(direct_history){
-        wins[id].w.history.go(-2);
+        w.history.go(-2);
       }else{
-        wins[id].w.location = path_for('3,'+id)
+        w.location = path_for('3,'+id)
       }
       },100)
 
       setTimeout(function(){
-        postback( wins[id].w.location.search.slice(1).split(',') );
+        resp = w.location.search.slice(1);
+        if(full_debug) debug('Received: '+resp);
+
+        postback( resp.split(',') );
 
       },2000)
     },timeout)
-  },data_timeout*2)
+  },data_timeout * 2)
 }
 
 
