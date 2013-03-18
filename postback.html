@@ -1,5 +1,5 @@
 <script>
-r=location.search.slice(1).split(',')
+r=location.hash.slice(1).split(',')
 if(r[0]=='3'){
   history.go(-3);
 }else{
