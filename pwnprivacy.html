@@ -11,7 +11,7 @@ var postback = function(data){
 
   if(wins[id].started){
     if(full_debug){
-      debug('Processing time (ms): '+ (new Date - wins[id].started))
+      //debug('Processing time (ms): '+ (new Date - wins[id].started))
     }
 
     wins[id].cb(guess);
@@ -58,7 +58,7 @@ var check_redirect = function(base, cb, assigner){
 
     setTimeout(function(){
       wins[id].started = new Date;
-      if(full_debug) debug('Started at '+ wins[id].started);
+      //if(full_debug) debug('Started at '+ wins[id].started);
 
       if(assigner){
         assigner(wins[id].w);
@@ -77,8 +77,7 @@ var check_redirect = function(base, cb, assigner){
 
       setTimeout(function(){
         resp = w.location.hash.slice(1);
-        if(full_debug) debug('Received: '+resp);
-
+        //if(full_debug) debug('Received: '+resp);
         postback( resp );
 
       },5000)
