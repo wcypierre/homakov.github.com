@@ -114,10 +114,12 @@ var sites = {
 }
 var result = {}
 for(var site in sites){
-  var cb = (function(k){ return function(guess){
-    debug('Logged in on '+k+': '+ (guess ? 'yes' : 'no'));
-    result[k] = guess;
-  }; })(site)
+  var cb = (function(site){ 
+    return function(guess){
+    debug('Logged in on '+site+': '+ (guess ? 'yes' : 'no'));
+    result[site] = guess;
+  }; 
+  })(site)
   check_redirect(sites[k], cb)  
 }
 
