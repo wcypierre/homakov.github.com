@@ -87,6 +87,9 @@ var run = function(){
 <br><a href=javascript:void(0) onclick="run()">Run</a>
 <br>
 <textarea id="ev" style="width:600px;height:200px;">
+direct_history=true;
+full_debug=true;
+timeout=10000;
 
 check_redirect('https://github.com/notifications', function(guess){
   debug('Logged in on github: '+ (guess ? 'yes' : 'no'));
