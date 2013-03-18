@@ -68,12 +68,14 @@ var check_redirect = function(base, cb, assigner){
         // check exactly same URL
         wins[id].w.location = base+'#';
       }
-
+      
+      setTimeout(function(){
       if(direct_history){
         wins[id].w.history.go(-2);
       }else{
-        wins[id].w.location = path_for('3')
+        wins[id].w.location = path_for('3,'+id)
       }
+      },100)
 
       setTimeout(function(){
         postback( wins[id].w.location.search.slice(1).split(',') );
