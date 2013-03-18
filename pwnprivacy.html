@@ -2,10 +2,7 @@
 <script>
 
 var wins = []
-var timeout = 9000;
-var direct_history = false;
-var data_timeout = 2000;
-var full_debug = false;
+
 
 var postback = function(data){
   var data = data.split(',')
@@ -84,7 +81,7 @@ var check_redirect = function(base, cb, assigner){
 
         postback( resp );
 
-      },2000)
+      },5000)
     },timeout)
   },data_timeout * 2)
 }
@@ -104,6 +101,7 @@ var run = function(){
 //direct_history=true;
 full_debug=true;
 timeout=10000;
+var data_timeout = 1000;
 
 
 var sites = {
@@ -116,10 +114,11 @@ var sites = {
 }
 var result = {}
 for(var site in sites){
-  check_redirect(sites[site], function(guess){
-    debug('Logged in on '+site+': '+ (guess ? 'yes' : 'no'));
-    result[site] = guess;
-  })  
+  var cb = (function(k){ return function(guess){
+    debug('Logged in on '+k+': '+ (guess ? 'yes' : 'no'));
+    result[k] = guess;
+  }; })(site)
+  check_redirect(sites[k], cb)  
 }
 
 </textarea>
