@@ -80,12 +80,13 @@ var check_redirect = function(base, cb, assigner){
       }
       },100)
       var checker = function(){
-        resp = w.location.hash;
-        if(resp){
+        try{
+          resp = w.location.hash;
         //if(full_debug) debug('Received: '+resp);
           postback( resp.slice(1) );
           w.close();
-        }else{
+        }catch(e){
+          //still no access
           setTimeout(checker,1000)
         }
       }
