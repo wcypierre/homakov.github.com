@@ -1,25 +1,3 @@
-<script>document.domain='github.com'</script>
-<form accept-charset="UTF-8" action="/session" method="post">
-
-      <div class="auth-form-body">
-        <label for="login_field">
-          Username or Email
-        </label>
-        <input autocapitalize="off" autofocus="autofocus" class="input-block" id="login_field" name="login" tabindex="1" type="text">
-
-        <label for="password">
-          Password <a href="/sessions/forgot_password">(forgot password)</a>
-        </label>
-        <input autocomplete="disabled" class="input-block" id="password" name="password" tabindex="2" type="password">
-
-                        <input class="button" name="commit" tabindex="3" type="submit" value="Sign in">
-      </div>
-</form>
-
-
-
-
-
 <h1>URL and redirection detection</h1>
 <script>
 
@@ -135,10 +113,15 @@ var use_frames = false;
 <br><a href=javascript:void(0) onclick="run()">Run</a>
 <br>
 <textarea id="ev" style="width:600px;height:200px;">
-var direct_history=true; //false in non-webkit 
-var full_debug=true;
-var timeout=10000;
+//webkit!
+var direct_history=true;
+//firefox!
+var direct_history=false;
+
+
 var data_timeout = 1000;
+
+var timeout=10000;
 
 
 var sites = {
