@@ -158,11 +158,11 @@ check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt
 
 // facebook handle detection
 var friends = ['john', 'eric', 'egor.homakov', 'alice'];
-check_redirect('http://facebook.com/profile', function(guess){
+check_redirect('https://www.facebook.com/profile.php', function(guess){
   debug('Guessed handle: '+ (guess ? 'yes' : 'no'));
 },function(w){
   for(var i in friends){
-    w.location = 'http://facebook.com/'+friends[i]+'#';
+    w.location = 'https://www.facebook.com/'+friends[i]+'#';
   }
 })
 
