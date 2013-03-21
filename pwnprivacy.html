@@ -83,7 +83,7 @@ var check_redirect = function(base, cb, assigner){
           if(resp && resp[1] != '3'){
             console.log(resp)
             postback( resp.slice(1) );
-            //w.close();
+            w.close();
           }else{
             setTimeout(checker,500)
           }
@@ -129,24 +129,20 @@ var timeout=10000;
 
 var result = {}
 
-var sites = {
-  github: 'https://github.com/notifications',
-  fb: 'https://www.facebook.com/messages/new',
-  gplus: 'https://plus.google.com/photos/instantupload',
-  twitter: 'https://twitter.com/following',
-  vk: 'http://vk.com/friends',
-  devianart: 'http://my.deviantart.com/messages/',
-  reddit: 'http://www.reddit.com/message/inbox/'
-}
-for(var site in sites){
-  var cb = (function(site){ 
-    return function(guess){
-    debug('Logged in on '+site+': '+ (guess ? 'yes' : 'no'));
-    result[site] = guess;
-  }; 
-  })(site)
-  check_redirect(sites[site], cb)  
-}
+var sites = {}
+sites.github='https://github.com/notifications'
+sites.fb= 'https://www.facebook.com/messages/new'
+sites.gplus= 'https://plus.google.com/photos/instantupload'
+sites.twitter= 'https://twitter.com/following'
+sites.vk= 'http://vk.com/friends'
+sites.devianart= 'http://my.deviantart.com/messages/'
+sites.reddit= 'http://www.reddit.com/message/inbox/'
+
+//Choose path
+check_redirect(sites.github, function(guess){
+  debug('Logged in: '+ (guess ? 'yes' : 'no'));
+});
+
 
 </textarea>
 <b><div id="deb">Log (yes means 100% yes, no means most likely no but can be mistaken because of network speed - double check!)</div></b>
