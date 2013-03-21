@@ -81,8 +81,9 @@ var check_redirect = function(base, cb, assigner){
         try{
           resp = w.location.hash;
           if(resp && resp != '#3'){
+            console.log(resp)
             postback( resp.slice(1) );
-            w.close();
+            //w.close();
           }else{
             setTimeout(checker,500)
           }
