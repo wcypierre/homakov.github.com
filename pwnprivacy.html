@@ -28,11 +28,11 @@ var debug=function(d){
 }
 
 var path_for = function(data){
-  //if(data=='3'){
-  //  return 'data:text/html,<script>history.go(-3);<'+'/script>'
-  //}else{
+  if(data[0]=='3'){
+    return 'data:text/html,<script>history.go(-3);<'+'/script>'
+  }else{
     return '/postback.html#'+data;
-  //}
+  }
     //'data:text/html,<script>opener.postMessage({result: false,id:'+id+'},"*")<'+'/script>'
 }
 
