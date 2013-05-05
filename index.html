@@ -3,9 +3,9 @@
 <a href="anysquare.html">Clickjacking extractor</a> 
 <a href="stealpass.html">Steal pass with XSS demo</a> 
 <hr>
-<b>ACT (Awesome CSRF Tool)</b>
-<p>CURL</p>
-<p><textarea rows="8" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
+<b>ACT — Awesome CSRF Tool</b>
+<p>CURL:</p>
+<p><textarea rows="4" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
 
 
 <div>
@@ -14,7 +14,7 @@
 </div>
 
 <div id="form"></div>
-<iframe id="postme" seamless sandbox style="width:800px;height:200px;"></iframe>
+<iframe id="postme" seamless sandbox style="width:800px;height:100px;"></iframe>
 <hr>
 <p>I am going to create best & simplest CSRF tool ever. Writeup soon. Play with CURL and location hash input — you will love it! Propose your ideas @homakov.<p>
 
@@ -65,6 +65,11 @@ function switch_url(url){
   update_form();
 }
 
+function switch_auto(){
+  form_obj.autosubmit = !form_obj.autosubmit;
+  update_form();
+}
+
 function get_html(){
   //genform.getElementsByTagName('input')
   alert(genform.parentNode.innerHTML);
@@ -97,7 +102,9 @@ function esc(quote){
 function parse_curl(){
   var input = curl.value;
   form_obj ={
-    url: input.match(url_re)[1]
+    url: input.match(url_re)[1],
+    autosubmit: false,
+    target: '_top'
   }
 
   if(data = input.match(data_re)){
@@ -107,7 +114,6 @@ function parse_curl(){
     form_obj.method = 'GET';
   }
 
-  dump_hash();
   update_form();
 }
 
@@ -117,6 +123,7 @@ function dump_hash(){
 
 function update_form(){
   form.innerHTML = generate_form(form_obj);
+  dump_hash(); //updating form? update hash too!
 }
 
 
@@ -128,8 +135,8 @@ window.onload = function(){
     curl.value = '';
     form_obj = JSON.parse(location.hash.substr(1));
     form.innerHTML = generate_form(form_obj);
-    if(form_obj.autosubmit=='true'){
-      submit_to('_top');
+    if(form_obj.autosubmit){
+      submit_to(form_obj.target);
     }
   }else{
     //demo
