@@ -9,7 +9,7 @@
 <img src="http://f.cl.ly/items/411t2m0W0n3h1k3g2F3w/Screen%20Shot%202013-05-05%20at%209.31.54%20PM.png"><p>
 
 <p>CURL</p>
-<p><textarea rows="10" cols="80" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
+<p><textarea rows="8" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
 
 
 <div>
@@ -53,7 +53,7 @@ function generate_form(obj){
     inputs += '<table>';
 
     for(var k in pairs){
-      inputs += '<tr><td>'+k+' </td><td><input size=80 name="'+esc(k)+'" value="'+esc(pairs[k])+'"><a onclick="this.parentNode.parentNode.remove();">[X]</a></td></tr>';
+      inputs += '<tr><td>'+k+' </td><td><input size=100 name="'+esc(k)+'" value="'+esc(pairs[k])+'"><a onclick="this.parentNode.parentNode.remove();">[X]</a></td></tr>';
     }
     inputs += '</table>';
   }
