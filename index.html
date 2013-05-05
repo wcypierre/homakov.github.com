@@ -1,13 +1,110 @@
-<a href=//egorhomakov.com>Egor Homakov</a><br> | Stuff: <a href="4sqlet.html">4sq app</a> 
-<a href="redmine.html">redmine leaker</a> 
-<a href="anysquare.html">clickjacking extractor</a> 
-<a href="stealpass.html">steal pass demo</a> 
+<a href=//egorhomakov.com>Egor Homakov</a> | Stuff: <a href="4sqlet.html">4sq app</a>
+<a href="redmine.html">Redmine JS leaking</a> 
+<a href="anysquare.html">Clickjacking extractor</a> 
+<a href="stealpass.html">Steal pass with XSS demo</a> 
 <hr>
+<b>ACT (Awesome CSRF Tool)</b>
+<p>I am going to create best & simplest CSRF tool ever. Writeup soon. Propose your ideas @homakov.<p>
 
-
-<textarea rows="10" cols="80" onkeypress="output.value=encodeURIComponent(this.value);" id="input" placeholder="Type here to encode.."></textarea>
-<br /><textarea rows="10" cols="80" id="output"></textarea>
-
-
+<img src="http://f.cl.ly/items/411t2m0W0n3h1k3g2F3w/Screen%20Shot%202013-05-05%20at%209.31.54%20PM.png"><p>
 
 <p>CURL</p>
+<p><textarea rows="10" cols="80" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
+
+
+<div>
+<p><input type="checkbox" id="c1"><label for="c1">Auto-submission [coming soon]</label></p>
+<p><input type="checkbox" id="c2"><label for="c2">Empty referrer [coming soon]</label></p>
+
+</div>
+
+<div id="form"></div>
+<iframe id="postme" seamless sandbox style="width:500px;height:500px;"></iframe>
+
+<script>
+
+var match_re = '"([^"]+)"';
+var url_re = new RegExp('curl '+match_re);
+var headers_re = new RegExp('-H '+match_re);
+var data_re = new RegExp('--data '+match_re);
+
+
+function parse_data(data){
+  var res = {};
+  var vars = data.split('&');
+  for (var i = 0; i < vars.length; i++) {
+    if(vars[i].length){
+      var pair = vars[i].split('=');
+      res[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+    }
+  }
+  return res;
+}
+
+function submit_to(to){
+  genform.target = to;
+  genform.submit();
+  return false;
+}
+
+function generate_form(obj){
+  var inputs = '';
+  if(obj.method == 'POST'){
+    var pairs = parse_data(obj.data);
+    inputs += '<table>';
+
+    for(var k in pairs){
+      inputs += '<tr><td>'+k+' </td><td><input size=80 name="'+esc(k)+'" value="'+esc(pairs[k])+'"><a onclick="this.parentNode.parentNode.remove();">[X]</a></td></tr>';
+    }
+    inputs += '</table>';
+  }
+  return '<p> <b>'+obj.method+' '+obj.url+'</b> </p><form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form><p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"></p>'
+}
+
+function esc(quote){
+  return quote.replace(/"/g,'\\"')
+}
+
+
+function parse_curl(){
+  var input = curl.value;
+  var obj ={
+    url: input.match(url_re)[1]
+  }
+
+  if(obj.data = input.match(data_re)){
+    obj.data = obj.data[1];
+    obj.method = 'POST';
+  }else{
+    obj.method = 'GET';
+  }
+
+  location.hash = JSON.stringify(obj);
+
+  form.innerHTML = generate_form(obj);
+}
+
+
+curl.onchange = parse_curl;
+
+window.onload = function(){
+  if(location.hash){
+    //lets load CSRF template
+    curl.value = '';
+    var given = JSON.parse(location.hash.substr(1));
+    form.innerHTML = generate_form(given);
+  }else{
+    //demo
+    parse_curl();
+  }
+
+}
+</script>
+
+<style>
+#genform{
+  background-color: yellow;
+}
+</style>
+
+
