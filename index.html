@@ -4,21 +4,21 @@
 <a href="stealpass.html">Steal pass with XSS demo</a> 
 <hr>
 <b>ACT (Awesome CSRF Tool)</b>
-<p>I am going to create best & simplest CSRF tool ever. Writeup soon. Play with CURL and location hash input — you will love it! Propose your ideas @homakov.<p>
-
-<img src="http://f.cl.ly/items/411t2m0W0n3h1k3g2F3w/Screen%20Shot%202013-05-05%20at%209.31.54%20PM.png"><p>
-
 <p>CURL</p>
 <p><textarea rows="8" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
 
 
 <div>
-<input type="checkbox" id="c1"><label for="c1">Auto-submission [coming soon]</label>
+<input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submission</label>
 <input type="checkbox" id="c2"><label for="c2">Empty referrer [coming soon]</label>
 </div>
 
 <div id="form"></div>
-<iframe id="postme" seamless sandbox style="width:800px;height:400px;"></iframe>
+<iframe id="postme" seamless sandbox style="width:800px;height:200px;"></iframe>
+<hr>
+<p>I am going to create best & simplest CSRF tool ever. Writeup soon. Play with CURL and location hash input — you will love it! Propose your ideas @homakov.<p>
+
+<img src="http://f.cl.ly/items/411t2m0W0n3h1k3g2F3w/Screen%20Shot%202013-05-05%20at%209.31.54%20PM.png"><p>
 
 <script>
 
@@ -26,7 +26,7 @@ var match_re = '"([^"]+)"';
 var url_re = new RegExp('curl '+match_re);
 var headers_re = new RegExp('-H '+match_re);
 var data_re = new RegExp('--data '+match_re);
-
+var form_obj = {};
 
 function parse_data(data){
   var res = {};
@@ -40,6 +40,14 @@ function parse_data(data){
   return res;
 }
 
+function dump_data(data){
+  var res = '';
+  for(var k in data){
+    res += encodeURIComponent(k)+'='+encodeURIComponent(data[k])+'&';
+  }
+  return res;
+}
+
 function submit_to(to){
   genform.target = to;
   genform.submit();
@@ -47,15 +55,23 @@ function submit_to(to){
 }
 
 function switch_method(){
-  var swap = (cur_method.innerHTML == 'GET') ? 'POST' : 'GET'
-  cur_method.innerHTML = swap;
-  genform.method = swap;
-  return false;
+  var swap = (form_obj.method == 'GET') ? 'POST' : 'GET'
+  form_obj.method = swap;
+  update_form();
 }
 
+function switch_url(url){
+  form_obj.url = url;
+  update_form();
+}
+
+function get_html(){
+  //genform.getElementsByTagName('input')
+  alert(genform.parentNode.innerHTML);
+}
 function generate_form(obj){
   var inputs = '';
-  if(obj.method == 'POST'){
+  if(obj.data){
     var pairs = parse_data(obj.data);
     inputs += '<table>';
 
@@ -64,9 +80,9 @@ function generate_form(obj){
     }
     inputs += '</table>';
   }
-  var out = '<p><a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="genform.action=this.value"> </p>';
+  var out = '<p><a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="switch_url(this.value);"> </p>';
   out += '<div><form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form></div>';
-  out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"> | <input type="submit" value="Get HTML" onclick="alert(genform.parentNode.innerHTML);"></p>';
+  out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"> | <input type="submit" value="Get HTML" onclick="get_html();"></p>';
 
   out = '<div class="yelo">'+out+'</div>';
 
@@ -80,20 +96,27 @@ function esc(quote){
 
 function parse_curl(){
   var input = curl.value;
-  var obj ={
+  form_obj ={
     url: input.match(url_re)[1]
   }
 
-  if(obj.data = input.match(data_re)){
-    obj.data = obj.data[1];
-    obj.method = 'POST';
+  if(data = input.match(data_re)){
+    form_obj.data = data[1];
+    form_obj.method = 'POST';
   }else{
-    obj.method = 'GET';
+    form_obj.method = 'GET';
   }
 
-  location.hash = JSON.stringify(obj);
+  dump_hash();
+  update_form();
+}
 
-  form.innerHTML = generate_form(obj);
+function dump_hash(){
+  location.hash = JSON.stringify(form_obj);
+}
+
+function update_form(){
+  form.innerHTML = generate_form(form_obj);
 }
 
 
@@ -103,8 +126,11 @@ window.onload = function(){
   if(location.hash){
     //lets load CSRF template
     curl.value = '';
-    var given = JSON.parse(location.hash.substr(1));
-    form.innerHTML = generate_form(given);
+    form_obj = JSON.parse(location.hash.substr(1));
+    form.innerHTML = generate_form(form_obj);
+    if(form_obj.autosubmit=='true'){
+      submit_to('_top');
+    }
   }else{
     //demo
     parse_curl();
