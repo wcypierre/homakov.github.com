@@ -3,14 +3,15 @@
 <a href="anysquare.html">Clickjacking extractor</a> 
 <a href="stealpass.html">Steal pass with XSS demo</a> 
 <hr>
-<b>ACT — Awesome CSRF Tool</b>
+<b>ACT — Awesome CSRF Tool. New standard for demonstration, penetration and exploitation CSRF.</b>
 <p>CURL:</p>
 <p><textarea rows="4" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
 
 
 <div>
 <input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submission</label>
-<input type="checkbox" id="c2"><label for="c2">Empty referrer [coming soon]</label>
+<input onclick="switch_base()" type="checkbox" id="c2"><label for="c2">Base64 URL</label>
+<input type="checkbox" id="c3"><label for="c3">Empty referrer [coming soon]</label>
 </div>
 
 <div id="form"></div>
@@ -27,6 +28,7 @@ var url_re = new RegExp('curl '+match_re);
 var headers_re = new RegExp('-H '+match_re);
 var data_re = new RegExp('--data '+match_re);
 var form_obj = {};
+var base_enc = false; //useless anyway ;)
 
 function parse_data(data){
   var res = {};
@@ -68,6 +70,11 @@ function switch_url(url){
 function switch_auto(){
   form_obj.autosubmit = !form_obj.autosubmit;
   update_form();
+}
+
+function switch_base(){
+  base_enc = !base_enc;
+  dump_hash();
 }
 
 function get_inputs(){
@@ -135,7 +142,8 @@ function parse_curl(){
 }
 
 function dump_hash(){
-  location.hash = JSON.stringify(form_obj);
+  var str = JSON.stringify(form_obj);
+  location.hash = base_enc ? btoa(str) : str;
 }
 
 function update_fields(new_pair){
@@ -162,11 +170,18 @@ window.onload = function(){
   if(location.hash){
     //lets load CSRF template
     curl.value = '';
-    form_obj = JSON.parse(location.hash.substr(1));
+    var str = location.hash.substr(1);
+    if(str[0]!='{'){
+      base_enc = true;
+      str = atob(str);
+      c2.checked = true;
+    }
+    form_obj = JSON.parse(str);
 
     // if autosubmit it should be hidden i guess
     form.innerHTML = generate_form(form_obj, !form_obj.autosubmit);
     if(form_obj.autosubmit){
+      c1.checked = true; //lolwhy?
       submit_to(form_obj.target);
     }
   }else{
