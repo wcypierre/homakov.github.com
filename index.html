@@ -18,7 +18,7 @@
 </div>
 
 <div id="form"></div>
-<iframe id="postme" seamless sandbox style="width:500px;height:500px;"></iframe>
+<iframe id="postme" seamless sandbox style="width:800px;height:400px;"></iframe>
 
 <script>
 
@@ -46,6 +46,13 @@ function submit_to(to){
   return false;
 }
 
+function switch_method(){
+  var swap = (cur_method.innerHTML == 'GET') ? 'POST' : 'GET'
+  cur_method.innerHTML = swap;
+  genform.method = swap;
+  return false;
+}
+
 function generate_form(obj){
   var inputs = '';
   if(obj.method == 'POST'){
@@ -57,7 +64,11 @@ function generate_form(obj){
     }
     inputs += '</table>';
   }
-  return '<p> <b>'+obj.method+' '+obj.url+'</b> </p><form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form><p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"></p>'
+  var out = '<p> <a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> '+obj.url+' </p>';
+  out += '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form>';
+  out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"></p>';
+
+  return out;
 }
 
 function esc(quote){
