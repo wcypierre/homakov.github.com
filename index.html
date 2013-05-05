@@ -66,7 +66,9 @@ function generate_form(obj){
   }
   var out = '<p><a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="genform.action=this.value"> </p>';
   out += '<div><form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form></div>';
-  out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"><input type="submit" value="Get HTML" onclick="alert(genform.parentNode.innerHTML);"></p>';
+  out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"> | <input type="submit" value="Get HTML" onclick="alert(genform.parentNode.innerHTML);"></p>';
+
+  out = '<div class="yelo">'+out+'</div>';
 
   return out;
 }
@@ -112,7 +114,7 @@ window.onload = function(){
 </script>
 
 <style>
-#genform{
+.yelo{
   background-color: yellow;
 }
 </style>
