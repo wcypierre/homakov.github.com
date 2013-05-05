@@ -70,28 +70,45 @@ function switch_auto(){
   update_form();
 }
 
-function get_html(){
-  //genform.getElementsByTagName('input')
-  alert(genform.parentNode.innerHTML);
+function get_inputs(){
+  return genform.getElementsByTagName('input');
 }
-function generate_form(obj){
+
+function get_html(){
+  //alert invisible form
+  alert(generate_form(form_obj, false));
+}
+
+function generate_form(obj, visible){
   var inputs = '';
   if(obj.data){
     var pairs = parse_data(obj.data);
-    inputs += '<table>';
+    inputs += '';
 
     for(var k in pairs){
-      inputs += '<tr><td>'+k+' </td><td><input size=100 name="'+esc(k)+'" value="'+esc(pairs[k])+'"><a onclick="this.parentNode.parentNode.remove();">[X]</a></td></tr>';
+      if(visible){
+        inputs += '<tr><td>'+k+' </td><td><input onchange="update_fields();" size=100 name="'+esc(k)+'" value="'+esc(pairs[k])+'"><a onclick="this.parentNode.parentNode.remove();update_fields();">[X]</a></td></tr>';
+      }else{
+        inputs += '<input type="hidden" name="'+esc(k)+'" value="'+esc(pairs[k])+'">';
+      }
     }
-    inputs += '</table>';
+    if(visible) inputs = '<table>'+inputs+'</table>';
   }
-  var out = '<p><a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="switch_url(this.value);"> </p>';
-  out += '<div><form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form></div>';
-  out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"> | <input type="submit" value="Get HTML" onclick="get_html();"></p>';
+  var outform = '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form>';
+  
+  if(visible){
+    var out = '<p><a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="switch_url(this.value);"> </p>';
+    out += '<div>'+outform+'</div>';
+    out += '<div><input id="new_name" placeholder="name"> = <input id="new_value" placeholder="value"> <a href="javascript:update_fields(1);">add<a></div>';
+    out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"> | <input type="submit" value="Get Exploit" onclick="get_html();"></p>';
 
-  out = '<div class="yelo">'+out+'</div>';
+    out = '<div class="yelo">'+out+'</div>';
+    return out;
+  }else{
+    // hidden form
+    return outform;
+  }
 
-  return out;
 }
 
 function esc(quote){
@@ -121,8 +138,20 @@ function dump_hash(){
   location.hash = JSON.stringify(form_obj);
 }
 
+function update_fields(new_pair){
+  var inputs = get_inputs();
+  var vals = {}
+  for(var k = 0; k<inputs.length;k++){
+    vals[inputs[k].name] = inputs[k].value;
+  }
+  if(new_pair) vals[new_name.value] = new_value.value;
+
+  form_obj.data = dump_data(vals);
+  update_form();
+}
+
 function update_form(){
-  form.innerHTML = generate_form(form_obj);
+  form.innerHTML = generate_form(form_obj, true);
   dump_hash(); //updating form? update hash too!
 }
 
@@ -134,7 +163,9 @@ window.onload = function(){
     //lets load CSRF template
     curl.value = '';
     form_obj = JSON.parse(location.hash.substr(1));
-    form.innerHTML = generate_form(form_obj);
+
+    // if autosubmit it should be hidden i guess
+    form.innerHTML = generate_form(form_obj, !form_obj.autosubmit);
     if(form_obj.autosubmit){
       submit_to(form_obj.target);
     }
