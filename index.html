@@ -64,9 +64,9 @@ function generate_form(obj){
     }
     inputs += '</table>';
   }
-  var out = '<p> <a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> '+obj.url+' </p>';
-  out += '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form>';
-  out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"></p>';
+  var out = '<p><a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="genform.action=this.value"> </p>';
+  out += '<div><form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form></div>';
+  out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"><input type="submit" value="Get HTML" onclick="alert(genform.parentNode.innerHTML);"></p>';
 
   return out;
 }
