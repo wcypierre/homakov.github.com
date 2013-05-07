@@ -178,6 +178,10 @@ window.onload = function(){
     }
     form_obj = JSON.parse(str);
 
+    // shame on you, asintsov and cyberpank!
+    if(form_obj.url.substr(0,4) != 'http') form_obj.url = 'http://yo.yo';
+    if(['POST','GET'].indexOf(form_obj.method) == -1) form_obj.method = 'POST';
+
     // if autosubmit it should be hidden i guess
     form.innerHTML = generate_form(form_obj, !form_obj.autosubmit);
     if(form_obj.autosubmit){
