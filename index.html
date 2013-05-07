@@ -118,14 +118,23 @@ function generate_form(obj, visible){
 
 }
 
-function esc(unsafe) {
-    return unsafe
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
- }
+var HTML = {
+  chars: {
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'    
+  },
+  escape: function(i){
+    return i.replace(HTML.re, function(m){
+      return HTML.chars[m];
+    })
+  }
+}
+HTML.re = new RegExp("("+keys(HTML.chars).join('|')+')','g');
+
+var esc = HTML.escape;
 
 function parse_curl(){
   var input = curl.value;
