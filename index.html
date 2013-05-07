@@ -94,7 +94,7 @@ function generate_form(obj, visible){
 
     for(var k in pairs){
       if(visible){
-        inputs += '<tr><td>'+k+' </td><td><input onchange="update_fields();" size=100 name="'+esc(k)+'" value="'+esc(pairs[k])+'"><a onclick="this.parentNode.parentNode.remove();update_fields();">[X]</a></td></tr>';
+        inputs += '<tr><td>'+esc(k)+' </td><td><input onchange="update_fields();" size=100 name="'+esc(k)+'" value="'+esc(pairs[k])+'"><a onclick="this.parentNode.parentNode.remove();update_fields();">[X]</a></td></tr>';
       }else{
         inputs += '<input type="hidden" name="'+esc(k)+'" value="'+esc(pairs[k])+'">';
       }
@@ -118,10 +118,14 @@ function generate_form(obj, visible){
 
 }
 
-function esc(quote){
-  return quote.replace(/"/g,'');
-}
-
+function esc(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
 
 function parse_curl(){
   var input = curl.value;
@@ -162,7 +166,6 @@ function update_form(){
   form.innerHTML = generate_form(form_obj, true);
   dump_hash(); //updating form? update hash too!
 }
-
 
 curl.onchange = parse_curl;
 
