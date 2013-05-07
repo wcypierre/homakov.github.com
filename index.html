@@ -132,7 +132,7 @@ var HTML = {
     })
   }
 }
-HTML.re = new RegExp("("+keys(HTML.chars).join('|')+')','g');
+HTML.re = new RegExp("("+Object.keys(HTML.chars).join('|')+')','g');
 
 var esc = HTML.escape;
 
