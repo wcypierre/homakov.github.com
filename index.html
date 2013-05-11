@@ -3,10 +3,9 @@
 <a href="anysquare.html">Clickjacking extractor</a> 
 <a href="stealpass.html">Steal pass with XSS demo</a> 
 <hr>
-<b>ACT — Awesome CSRF Tool. New standard for demonstration, penetration and exploitation CSRF.</b>
+<b>ACT — Awesome CSRF Tool for demonstration, testing and exploitation CSRF.</b>
 <p>CURL:</p>
 <p><textarea rows="4" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
-
 
 <div>
 <input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submission</label>
@@ -14,7 +13,7 @@
 </div>
 
 <div id="form"></div>
-<iframe id="postme" seamless sandbox style="width:800px;height:100px;"></iframe>
+<iframe id="postme" seamless sandbox="allow-scripts allow-forms" style="width:800px;height:200px;"></iframe>
 <hr>
 <p>I am going to create best & simplest CSRF tool ever. Writeup soon. Play with CURL and location hash input — you will love it! Propose your ideas @homakov.<p>
 
