@@ -48,11 +48,9 @@ function submit_to(to){
 
 function no_ref(){
   /*
-  var x=new XMLHttpRequest;
-  x.open(form_obj.method, form_obj.url);
-  x.send(form_obj.data);
+  data: urls omit referers, i have a blogpost on this
   */
-  postme.src = 'data:text/html,'+get_html();
+  postme.location = 'data:text/html,'+get_html();
 }
 
 function switch_method(){
