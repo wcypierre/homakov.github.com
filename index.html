@@ -117,6 +117,7 @@ function generate_form(obj, visible){
 
 }
 
+//home made shit
 var HTML = {
   chars: {
     '&':'&amp;',
@@ -132,7 +133,6 @@ var HTML = {
   }
 }
 HTML.re = new RegExp("("+Object.keys(HTML.chars).join('|')+')','g');
-
 var esc = HTML.escape;
 
 function parse_curl(){
