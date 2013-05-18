@@ -3,14 +3,19 @@
 <a href="anysquare.html">Clickjacking extractor</a> 
 <a href="stealpass.html">Steal pass with XSS demo</a> 
 <hr>
-<b>CSRF Tool (<a href="http://homakov.blogspot.ru/2013/05/csrf-tool.html">How it works</a>)</b>
-<p><textarea rows="4" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
-<div>
-  <input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submit</label>
-  <input onclick="switch_base()" type="checkbox" id="c2"><label for="c2">Base64 URL</label>
-</div>
-<div id="form"></div>
-<iframe id="postme" seamless sandbox="allow-scripts allow-forms" style="width:800px;height:200px;"></iframe>
+<table><tr><td valign=top width="400px">
+CSRF Tool (<a href="http://homakov.blogspot.ru/2013/05/csrf-tool.html">How it works</a>)
+
+<input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submit</label>
+<input onclick="switch_base()" type="checkbox" id="c2"><label for="c2">Base64 URL</label>
+<textarea rows="6" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea>
+
+<div id="form"></div></td>
+<td>
+<iframe id="postme" seamless sandbox="allow-scripts allow-forms" style="width:600px;height:500px;"></iframe>
+</td>
+</tr></table>
+
 <script>
 
 var match_re = '"([^"]+)"';
@@ -101,10 +106,11 @@ function generate_form(obj, visible){
   var outform = '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form>';
   
   if(visible){
-    var out = '<p><a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="switch_url(this.value);"> </p>';
-    out += '<div>'+outform+'</div>';
+    var out = '<a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="switch_url(this.value);">';
+    out += '<input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe"><input type="submit" onclick="return no_ref();" value="No referer"> <input type="submit" value="Get CSRF exploit" onclick="alert(get_html());">';
     out += '<div><input id="new_name" placeholder="name"> = <input id="new_value" placeholder="value"> <a href="javascript:update_fields(1);">add<a></div>';
-    out += '<p><input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe below"><input type="submit" onclick="return no_ref();" value="Empty referer"> | <input type="submit" value="Get CSRF exploit" onclick="alert(get_html());"></p>';
+
+    out += '<div>'+outform+'</div>';
 
     out = '<div class="yelo">'+out+'</div>';
     return out;
