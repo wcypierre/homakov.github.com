@@ -3,22 +3,14 @@
 <a href="anysquare.html">Clickjacking extractor</a> 
 <a href="stealpass.html">Steal pass with XSS demo</a> 
 <hr>
-<b>ACT — Awesome CSRF Tool for demonstration, testing and exploitation CSRF.</b>
-<p>CURL:</p>
+<b>CSRF Tool (<a href="http://homakov.blogspot.ru/2013/05/csrf-tool.html">How it works</a>)</b>
 <p><textarea rows="4" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea></p>
-
 <div>
-<input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submission</label>
-<input onclick="switch_base()" type="checkbox" id="c2"><label for="c2">Base64 URL</label>
+  <input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submit</label>
+  <input onclick="switch_base()" type="checkbox" id="c2"><label for="c2">Base64 URL</label>
 </div>
-
 <div id="form"></div>
 <iframe id="postme" seamless sandbox="allow-scripts allow-forms" style="width:800px;height:200px;"></iframe>
-<hr>
-<p>I am going to create best & simplest CSRF tool ever. Writeup soon. Play with CURL and location hash input — you will love it! Propose your ideas @homakov.<p>
-
-<img src="http://f.cl.ly/items/411t2m0W0n3h1k3g2F3w/Screen%20Shot%202013-05-05%20at%209.31.54%20PM.png"><p>
-
 <script>
 
 var match_re = '"([^"]+)"';
