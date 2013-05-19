@@ -104,7 +104,7 @@ function generate_form(obj, visible){
   
   if(visible){
     var out = '<a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=120 value="'+esc(obj.url)+'" onchange="switch_url(this.value);">';
-    out += '<input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe"><input type="submit" onclick="return no_ref();" value="No referer"> <input type="submit" value="Get CSRF exploit" onclick="postme.location.replace(\"data:,\"+get_html()(get_html());">';
+    out += '<input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe"><input type="submit" onclick="return no_ref();" value="No referer"> <input type="submit" value="Get CSRF exploit" onclick="postme.location.replace(\"data:,\"+get_html());">';
     out += '<div><input id="new_name" placeholder="name"> = <input id="new_value" placeholder="value"> <a href="javascript:update_fields(1);">add<a></div>';
 
     out += '<div>'+outform+'</div>';
