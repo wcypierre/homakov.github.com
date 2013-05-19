@@ -93,7 +93,7 @@ function generate_form(obj, visible){
 
     for(var k in pairs){
       if(visible){
-        inputs += '<tr><td><a href="javascript:void(0)" onclick="this.parentNode.parentNode.remove();update_fields();">x</a>'+esc(k)+' </td><td><input onchange="update_fields();" style="width:100%" name="'+esc(k)+'" value="'+esc(pairs[k])+'"></td></tr>';
+        inputs += '<tr><td><a href="javascript:void(0)" onclick="this.parentNode.parentNode.remove();update_fields();">x</a>'+esc(k)+' </td><td style="width:100%"><input onchange="update_fields();" name="'+esc(k)+'" value="'+esc(pairs[k])+'"></td></tr>';
       }else{
         inputs += '<input type="hidden" name="'+esc(k)+'" value="'+esc(pairs[k])+'">';
       }
