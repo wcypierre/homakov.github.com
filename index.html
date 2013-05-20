@@ -22,7 +22,7 @@ var url_re = new RegExp('curl '+match_re);
 var headers_re = new RegExp('-H '+match_re);
 var data_re = new RegExp('--data '+match_re);
 var form_obj = {};
-var base_enc = false; //useless anyway ;)
+var base_enc = false;
 
 function parse_data(data){
   var res = {};
@@ -83,7 +83,7 @@ function get_inputs(){
 }
 
 function get_html(){
-  return (generate_form(form_obj, false)+'<script>genform.submit()<'+'/script>');
+  return generate_form(form_obj, false)+'<script>genform.submit()<'+'/script>';
 }
 
 function generate_form(obj, visible){
@@ -209,7 +209,6 @@ window.onload = function(){
     //demo
     parse_curl();
   }
-
 }
 </script>
 
