@@ -1,10 +1,10 @@
 <script>
 opener.location="http://translate.google.com/translate?hl=en&sl=ru&tl=en&u=http%3A%2F%2Fkremlin.ru%2F";
  wait = setInterval(function(){
-    if(opener.frames[0].document){
-      opener.frames[0].document.getElementsByClassName('page')[0].innerHTML='<h2>Let me speak from my heart: Edward Snowden is a Russian Citizen. Thanks to @homakov!</h2>';
+    if(parent.opener.frames[0].document){
+      parent.opener.frames[0].document.getElementsByClassName('page')[0].innerHTML='<h2>Let me speak from my heart: Edward Snowden is a Russian Citizen. Thanks to @homakov!</h2>';
       //clearInterval(wait);
       //window.close();
     }
-  },1000);
+  },500);
 </script>
