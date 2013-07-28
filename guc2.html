@@ -3,7 +3,7 @@ if(location.search=='?init'){
   document.write('<iframe id=ph name=ph src="http://translate.google.com/translate?hl=en&sl=en&tl=ru&u=http%3A%2F%2Fhomakov.github.io%2Fguc2.html%3F5"></iframe>');
 
   setInterval(function(){
-    if(ph.name == 'closeme') window.close();
+    if(ph.frames[0].name == 'closeme') window.close();
   },100)
 }else{
   // under GUC
