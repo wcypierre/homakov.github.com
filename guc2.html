@@ -1,6 +1,6 @@
 <script>
 if(location.search.substr(0,2)=='?i'){
-  document.write('<iframe src="http://translate.google.com/translate?hl=en&sl=en&tl=ru&u=http%3A%2F%2Fhomakov.github.io%2Fguc2.html%3F142"></iframe>');
+  document.write('<iframe style="opacity:0" src="http://translate.google.com/translate?hl=en&sl=en&tl=ru&u=http%3A%2F%2Fhomakov.github.io%2Fguc2.html%3F162"></iframe>');
   window.onmessage=function(){window.close();}
 }else{
   // under GUC
@@ -10,13 +10,12 @@ if(location.search.substr(0,2)=='?i'){
       // parent is GT, parent.parent is ?i page
       var el = parent.parent.opener.frames[0].document.getElementsByClassName('page')[0];
       if(el){
-        el.innerHTML='<h2>Hey! Russia needs some rebranding. We are Mango Federation now!</h2>';
+        el.innerHTML='<h1>Hey! Russia needed some rebranding. We are Mango Federation now!</h1>';
         clearInterval(wait);
         parent.parent.postMessage('closeme','*')
       }
     }catch(e){}
     
-  }, 500);
+  }, 100);
 }
 </script>
-
