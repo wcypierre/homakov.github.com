@@ -17,7 +17,7 @@ CSRF Tool (<a href="http://homakov.blogspot.ru/2013/05/csrf-tool.html">How it wo
 </tr></table>
 
 <script>
-var match_re = '(\'|")([^"\']+)(\'|")';
+var match_re = '(?:\'|")([^"\']+)(?:\'|")';
 var url_re = new RegExp('curl '+match_re);
 var headers_re = new RegExp('-H '+match_re);
 var data_re = new RegExp('--data '+match_re);
