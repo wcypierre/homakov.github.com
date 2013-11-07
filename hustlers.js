@@ -1,5 +1,6 @@
 var http = require('http');
 var https = require('https');
+var get = require('get');
 
 var fs = require('fs');
 
@@ -21,10 +22,15 @@ done = function(){
   	for(var key in hustlers[i].details){
       details.push(key+(hustlers[i].details[key]>1 ? " ("+hustlers[i].details[key]+")" : ''));
   	}
-    
-    result += ("<tr><td>"+(i+1)+"</td><td width=50%>" + hustlers[i].handles[0] + "</td><td width=10%>$" + hustlers[i].reward + "</td><td>" + details.join(', ') + "</td></tr>")
-  }
 
+    var handle = hustlers[i].handles[0];
+    if(handle[0] == '@'){
+      handle = handle.substr(1);
+      handle = '<a href="http://twitter.com/'+handle+'">@'+handle+"</a>";
+    }
+    
+    result += ("<tr><td>"+(i+1)+"</td><td width='40%'>" + handle + "</td><td width=10%>$" + hustlers[i].reward + "</td><td>" + details.join(', ') + "</td></tr>")
+  }
 
   result = 'Bounty Hustlers [aggregated from '+aggr+']<br><table border=1><tr><td>#</td><td width=50%>Handle</td><td width=10%>Cash Reward</td><td>Bounties</td></tr>' + result + '</table>';
   fs.writeFile("../high-lightning-427/hustlers.html", result, function(err) {
@@ -44,12 +50,13 @@ upgrade_hustler = function(h,id){
     h.details[bounties[id].name] = 1
   }
 }
+
 lookup_hustler = function(name){
   //normalize twitter handle
   //twitter.com/_RaviRamesh
-  tw = /(?:[^a-zA-Z])(com\/|@)([A-Za-z0-9_]{1,15})/.exec(name)
+  tw = /(?:[^a-zA-Z])(twitter\.com\/|@)([A-Za-z0-9_]{1,15})/.exec(name)
   if(tw){
-    name = '<a href="http://twitter.com/'+tw[2]+'">@'+tw[2]+"</a>";
+    name = '@'+tw[2];
   }else{
     name = name.replace(/<.*?>/g,'');
     name = name.split(/\s?\(?(of|from)/)[0]    
@@ -199,7 +206,7 @@ bounties.push({
   url: 'https://www.dropbox.com/special_thanks',
   cb: function(r, id){
     var res;
-    r=r.split('thanks-go-to')[1];
+    r=r.split('thanks-go-to')[1].split('responsible-disclosure')[0];
     var reg  = /<li>(.*?)<\/li>/g;
     while ((res = reg.exec(r)) !== null){
       h = lookup_hustler(res[1]);
@@ -244,7 +251,7 @@ bounties.push({
   url: 'http://bugbounty.yahoo.com/security_wall.html',
   cb: function(r, id){
     var res;
-    r=r.split('wall-list')[1];
+    r=r.split('header-badge')[1];
     var reg  = /<li>(.*?)<\/li>/g;
     while ((res = reg.exec(r)) !== null){
       h = lookup_hustler(res[1]);
@@ -292,10 +299,18 @@ bounties.push({
     }
   }
 })
-
-
-
-
+bounties.push({
+  name: "Apple",
+  url: 'http://support.apple.com/kb/HT1318',
+  cb: function(r, id){
+    var res;
+    var reg  = /We would like to acknowledge (.*?) for/g;
+    while ((res = reg.exec(r)) !== null){
+      h = lookup_hustler(res[1]);
+      upgrade_hustler(h,id);
+    }
+  }
+})
 
 bounties.push({
   name: "Nokia",
@@ -341,67 +356,134 @@ bounties.push({
 
 
 
-var https = require('https');
 
-var options = {
-  hostname: 'encrypted.google.com',
-  port: 443,
-  path: '/',
-  method: 'GET'
-};
-
-var req = https.request(options, function(res) {
-  console.log("statusCode: ", res.statusCode);
-  console.log("headers: ", res.headers);
-
-  res.on('data', function(d) {
-    process.stdout.write(d);
-  });
-});
-req.end();
-
-req.on('error', function(e) {
-  console.error(e);
-});
+bounties.push({
+  name: "Shopify",
+  url: 'https://www.shopify.com/security-response',
+  cb: function(r, id){
+    var res;
+    r=r.split('Thank you!</h3')[1].split('sub-call-to-action')[0];
+    var reg  = /<p>(.*?)<\/p>/g;
+    while ((res = reg.exec(r)) !== null){
+      h = lookup_hustler(res[1]);
+      upgrade_hustler(h,id);
+    }
+  }
+})
 
 
-//https://www.shopify.com/security-response
-//https://www.facebook.com/whitehat/thanks/
-//https://www.heroku.com/policy/security-hall-of-fame
-//https://www.paypal.com/webapps/mpp/security-tools/wall-of-fame-honorable-mention
-//https://access.redhat.com/site/articles/66234
+bounties.push({
+  name: "Facebook",
+  url: 'https://www.facebook.com/whitehat/thanks/',
+  cb: function(r, id){
+    var res;
+    r = r.replace('064;', '@');
+    var reg  = /<span class="fsm">(.*?)<\/span>/g;
+    while ((res = reg.exec(r)) !== null){
+      h = lookup_hustler(res[1]);
+      upgrade_hustler(h,id);
+    }
+  }
+})
 
-//https://about.twitter.com/company/security
-/*
->@0xde1</a></span>
-                      </div>
+bounties.push({
+  name: "Heroku",
+  url: 'https://www.heroku.com/policy/security-hall-of-fame',
+  cb: function(r, id){
+    var res;
+    r=r.split('Security Researcher')[1].split('article>')[0];
+    var reg  = /<li>(.*?)<\/li>/g;
+    while ((res = reg.exec(r)) !== null){
+      res[1] = res[1].split(' (')[0];
+      h = lookup_hustler(res[1]);
+      upgrade_hustler(h,id);
+    }
+  }
+})
+bounties.push({
+  name: "Red hat",
+  url: 'https://access.redhat.com/site/articles/66234',
+  cb: function(r, id){
+    var res;
+    r=r.split('Please avoid using')[1].split('like a public acknowledgement')[0];
+    var reg  = /<li>(.*?)<\/li>/g;
+    while ((res = reg.exec(r)) !== null){
+      data = res[1].split(' [');
+      h = lookup_hustler(data[0]);
+      num = 1;
+      if(data[1]){
+        num = parseInt(data[1]);
+      }
+      while(num--){
+        upgrade_hustler(h,id);
+      }
+      
+    }
+  }
+})
 
-  </div> */
+bounties.push({
+  name: "Twitter",
+  url: 'https://about.twitter.com/company/security',
+  cb: function(r, id){
+    var res;
+    var reg  = />([^<]*?)<\/a><\/span>\s*<\/div>\s*<\/div>/g;
+    while ((res = reg.exec(r)) !== null){
+      h = lookup_hustler(res[1]);
+      upgrade_hustler(h,id);
+    }
+  }
+})
+
+
+
+
+bounties.push({
+  name: "Etsy",
+  url: 'http://www.etsy.com/help/article/2463',
+  cb: function(r, id){
+    var res;
+    r=r.split('vulnerabilities to us in the past')[1];
+    var reg  = />(.*?)<br \/>/g;
+    while ((res = reg.exec(r)) !== null){
+      h = lookup_hustler(res[1]);
+      upgrade_hustler(h,id);
+    }
+  }
+})
+
+
+bounties.push({
+  name: "Paypal",
+  url: 'https://www.paypal.com/webapps/mpp/security-tools/wall-of-fame-honorable-mention',
+  cb: function(r, id){
+    var res;
+    var reg  = /xl65">(.*?)</g;
+    while ((res = reg.exec(r)) !== null){
+      h = lookup_hustler(res[1]);
+      upgrade_hustler(h,id);
+    }
+  }
+})
+ 
 
 var requested = bounties.length;
 var result = '';
 var aggr = '';
 for(id=0,l=bounties.length;id<l;id++){
+
   aggr += " <a href='"+bounties[id].url+"'>"+bounties[id].name+'</a> ';
   var callback = (function(cb,id) {
-    return function(res) {
-      var body = '';
-      res.on('data', function(chunk) {
-          body += chunk;
-      });
-      res.on('end', function() {
-        cb(body,id);
-        console.log(requested)
-        if(--requested == 0) done();
-      });
-      res.on('error', function(e) {
-        console.log("Got error: " + e.message);
-      })
+    return function(err,res) {
+      if (err) throw err;
+      cb(res,id);
+      console.log(requested)
+      if(--requested == 0) done();
     }
     })(bounties[id].cb,id)
 
-  transport = bounties[id].url[4] == 's' ? https : http;
-  transport.get(bounties[id].url, callback)
+  //transport = get //bounties[id].url[4] == 's' ? https : http;
+  get(bounties[id].url).asString(callback);
 }
 
 
