@@ -4,8 +4,9 @@ var fs = require('fs');
 var hustlers = [];
 var bounties = [];
 
-/* 
+/*
 Actually I am not a programmer so don't tell me how shitty this code is. peace
+Online: http://www.sakurity.com/hustlers
 */
 
 done = function(){
