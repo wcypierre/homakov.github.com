@@ -47,9 +47,10 @@ upgrade_hustler = function(h,id){
 }
 lookup_hustler = function(name){
   //normalize twitter handle
-  tw = /(?:[^a-zA-Z])(@[A-Za-z0-9_]{1,15})/.exec(name)
+  //twitter.com/_RaviRamesh
+  tw = /(?:[^a-zA-Z])(com\/|@)([A-Za-z0-9_]{1,15})/.exec(name)
   if(tw){
-    name = tw[1];
+    name = '<a href="http://twitter.com/'+tw[2]+'">@'+tw[2]+"</a>";
   }else{
     name = name.replace(/<.*?>/g,'');
     name = name.split(/\s?\(?(of|from)/)[0]    
@@ -329,6 +330,7 @@ bounties.push({
   url: 'http://help.soundcloud.com/customer/portal/articles/439715-responsible-disclosure',
   cb: function(r, id){
     var res;
+    r=r.split('we really appreciate it')[1].split('span style')[0];
     var reg  = /-(.*?)<br/g;
     while ((res = reg.exec(r)) !== null){
       h = lookup_hustler(res[1]);
