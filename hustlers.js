@@ -12,29 +12,28 @@ Online: http://www.sakurity.com/hustlers
 */
 
 done = function(){
-  if(--requested == 0){
-    hustlers.sort(function(a,b){
-      return b.bounties.length-a.bounties.length
-    });
+  hustlers.sort(function(a,b){
+    return b.bounties.length-a.bounties.length
+  });
 
-    for(var i=0,l=hustlers.length;i<l;i++){
-    	details = [];
-    	for(var key in hustlers[i].details){
-        details.push(key+(hustlers[i].details[key]>1 ? " ("+hustlers[i].details[key]+")" : ''));
-    	}
-      
-      result += ("<tr><td>"+(i+1)+"</td><td width=50%>" + hustlers[i].handles[0] + "</td><td width=10%>$" + hustlers[i].reward + "</td><td>" + details.join(', ') + "</td></tr>")
-    }
-
-    result = 'Bounty Hustlers:<br><table border=1><tr><td>#</td><td width=50%>Handle</td><td width=10%>Cash Reward</td><td>Bounties</td></tr>' + result + '</table>';
-    fs.writeFile("../high-lightning-427/hustlers.html", result, function(err) {
-        if(err) {
-            console.log(err);
-        } else {
-            console.log("The file was saved!");
-        }
-    });
+  for(var i=0,l=hustlers.length;i<l;i++){
+  	details = [];
+  	for(var key in hustlers[i].details){
+      details.push(key+(hustlers[i].details[key]>1 ? " ("+hustlers[i].details[key]+")" : ''));
+  	}
+    
+    result += ("<tr><td>"+(i+1)+"</td><td width=50%>" + hustlers[i].handles[0] + "</td><td width=10%>$" + hustlers[i].reward + "</td><td>" + details.join(', ') + "</td></tr>")
   }
+
+
+  result = 'Bounty Hustlers [aggregated from '+aggr+']<br><table border=1><tr><td>#</td><td width=50%>Handle</td><td width=10%>Cash Reward</td><td>Bounties</td></tr>' + result + '</table>';
+  fs.writeFile("../high-lightning-427/hustlers.html", result, function(err) {
+    if(err) {
+        console.log(err);
+    } else {
+        console.log("The file was saved!");
+    }
+  });
 }
 
 upgrade_hustler = function(h,id){	
@@ -381,7 +380,9 @@ req.on('error', function(e) {
 
 var requested = bounties.length;
 var result = '';
+var aggr = '';
 for(id=0,l=bounties.length;id<l;id++){
+  aggr += " <a href='"+bounties[id].url+"'>"+bounties[id].name+'</a> ';
   var callback = (function(cb,id) {
     return function(res) {
       var body = '';
@@ -391,7 +392,7 @@ for(id=0,l=bounties.length;id<l;id++){
       res.on('end', function() {
         cb(body,id);
         console.log(requested)
-        done();
+        if(--requested == 0) done();
       });
       res.on('error', function(e) {
         console.log("Got error: " + e.message);
