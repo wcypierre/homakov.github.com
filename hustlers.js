@@ -29,10 +29,10 @@ done = function(){
       handle = '<a href="http://twitter.com/'+handle+'">@'+handle+"</a>";
     }
     
-    result += ("<tr><td>"+(i+1)+"</td><td width='40%'>" + handle + "</td><td width=10%>$" + hustlers[i].reward + "</td><td>" + details.join(', ') + "</td></tr>")
+    result += ("<tr><td>"+(i+1)+"</td><td width=''>" + handle + "</td><td>$" + hustlers[i].reward + "</td><td>" + details.join(', ') + "</td></tr>")
   }
 
-  result = 'Bounty Hustlers [aggregated from '+aggr+']<br><table border=1><tr><td>#</td><td width=50%>Handle</td><td width=10%>Cash Reward</td><td>Bounties</td></tr>' + result + '</table>';
+  result = 'Bounty Hustlers [aggregated from '+aggr+']<br><table border=1><tr><td>#</td><td width=200px>Handle</td><td width=100px>Cash Reward</td><td>Bounties</td></tr>' + result + '</table>';
   fs.writeFile("../high-lightning-427/hustlers.html", result, function(err) {
     if(err) {
         console.log(err);
@@ -44,6 +44,11 @@ done = function(){
 
 upgrade_hustler = function(h,id){	
   h.bounties.push(id);
+  if(bounties[id].found){
+    bounties[id].found++;
+  }else{
+    bounties[id].found=1;
+  }
   if(h.details[bounties[id].name]){
     h.details[bounties[id].name] += 1
   }else{
@@ -472,12 +477,13 @@ var result = '';
 var aggr = '';
 for(id=0,l=bounties.length;id<l;id++){
 
-  aggr += " <a href='"+bounties[id].url+"'>"+bounties[id].name+'</a> ';
   var callback = (function(cb,id) {
     return function(err,res) {
       if (err) throw err;
       cb(res,id);
-      console.log(requested)
+
+      aggr += "| <a href='"+bounties[id].url+"'>"+bounties[id].name+'('+bounties[id].found+')</a> ';
+      console.log(bounties[id].name, 'found', bounties[id].found)
       if(--requested == 0) done();
     }
     })(bounties[id].cb,id)
