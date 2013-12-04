@@ -1,0 +1,27 @@
+<h1>CSP detection</h1>
+<script>
+window.onmessage = function(e){
+  console.log(e.data)
+  if(e.data == 1){
+  	clearTimeout(window.tm);
+    window.cb(true);
+  }
+}
+
+function does_redirect(url, cb){
+  var allowed = url.split('?')[0];
+  var frame = document.getElementById('playground');
+  window.cb = cb;
+  window.tm = setTimeout(function(){
+  	window.cb(false);
+  },3000);
+  frame.src = 'data:text/html,<meta http-equiv="Content-Security-Policy" content="img-src '+allowed+';"><img src="'+url+'" onerror=parent.postMessage(1,"*") onload=parent.postMessage(2,"*")>'
+}
+</script>
+<iframe id="playground" style="display:none;"></iframe>
+
+does_redirect('https://www.facebook.com/dialog/oauth?redirect_uri=https%3A%2F%2Fpinterest.com%2Fconnect%2Ffacebook%2F&display=popup&client_id=274266067164', function(result){
+	alert(result ? 'Not authorized' : 'Authorized');
+})
+
+

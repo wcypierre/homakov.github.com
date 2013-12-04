@@ -12,6 +12,8 @@ Actually I am not a programmer so don't tell me how shitty this code is. peace
 Online: http://www.sakurity.com/hustlers
 */
 
+var exclude = ['Arthur Gerkis'];
+
 done = function(){
   hustlers.sort(function(a,b){
     return b.bounties.length-a.bounties.length
@@ -24,6 +26,9 @@ done = function(){
   	}
 
     var handle = hustlers[i].handles[0];
+    
+    if(exclude.indexOf(handle) != -1) continue;
+
     if(handle[0] == '@'){
       handle = handle.substr(1);
       handle = '<a href="http://twitter.com/'+handle+'">@'+handle+"</a>";
