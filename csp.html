@@ -19,9 +19,24 @@ function does_redirect(url, cb){
 }
 </script>
 <iframe id="playground" style="display:none;"></iframe>
-
 does_redirect('https://www.facebook.com/dialog/oauth?redirect_uri=https%3A%2F%2Fpinterest.com%2Fconnect%2Ffacebook%2F&display=popup&client_id=274266067164', function(result){
-	alert(result ? 'Not authorized' : 'Authorized');
+  alert(result ? 'Not authorized' : 'Authorized');
 })
+<br>
+<br>Showcases:
+<br><a href="javascript:does_redirect('https://github.com/notifications', function(result){
+  alert(result ? 'Authorized': 'Not authorized');
+})
+">Github</a>
+<br><a href="javascript:does_redirect('https://www.facebook.com/login.php', function(result){
+  alert(result ? 'Not authorized' : 'Authorized');
+})
+">Facebook</a>
+
+
+
+
+
+
 
 
