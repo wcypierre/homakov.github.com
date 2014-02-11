@@ -26,19 +26,19 @@ done = function(){
   	}
 
     var handle = hustlers[i].handles[0];
-    
+
     if(exclude.indexOf(handle) != -1) continue;
 
     if(handle[0] == '@'){
       handle = handle.substr(1);
-      handle = '<a href="http://twitter.com/'+handle+'">@'+handle+"</a>";
+      handle = '<a href="https://twitter.com/'+handle+'">@'+handle+"</a>";
     }
-    
+
     result += ("<tr><td>"+(i+1)+"</td><td width=''>" + handle + "</td><td>$" + hustlers[i].reward + "</td><td>" + details.join(', ') + "</td></tr>")
   }
 
-  result = 'Bounty Hustlers [aggregated from '+aggr+']<br><table border=1><tr><td>#</td><td width=200px>Handle</td><td width=100px>Cash Reward</td><td>Bounties</td></tr>' + result + '</table>';
-  fs.writeFile("../high-lightning-427/hustlers.html", result, function(err) {
+  result = 'Bounty Hustlers [aggregated from '+aggr.join(' | ')+']<br><table border=1><tr><td>#</td><td width=200>Handle</td><td width=100>Cash Reward</td><td>Bounties</td></tr>' + result + '</table>';
+  fs.writeFile("./hustlers.html", result, function(err) {
     if(err) {
         console.log(err);
     } else {
@@ -47,7 +47,7 @@ done = function(){
   });
 }
 
-upgrade_hustler = function(h,id){	
+upgrade_hustler = function(h,id){
   h.bounties.push(id);
   if(bounties[id].found){
     bounties[id].found++;
@@ -69,7 +69,7 @@ lookup_hustler = function(name){
     name = '@'+tw[2];
   }else{
     name = name.replace(/<.*?>/g,'');
-    name = name.split(/\s?\(?(of|from)/)[0]    
+    name = name.split(/\s?\(?(of|from)/)[0]
   }
   name = name.trim();
 
@@ -116,7 +116,7 @@ bounties.push({
 
       item = res[1].split(/\sfor/)[0];
       item = item.split(/\sto\s/).reverse();
- 
+
       h = lookup_hustler(item[0]);
       upgrade_hustler(h,id);
       if(item.length == 2)
@@ -240,21 +240,26 @@ bounties.push({
   }
 })
 
-
 bounties.push({
-  name: "Github",
-  url: 'https://help.github.com/articles/responsible-disclosure-of-security-vulnerabilities',
+  name: "GitHub",
+  url: 'https://bounty.github.com/bounty-hunters.html',
   cb: function(r, id){
     var res;
-    r=r.split('<ul')[3];
-    var reg  = /<li>(.*?)<\/li>/g;
+    var reg  = /<li>([\s\S]*?)<\/li>/g;
+    var tmp;
     while ((res = reg.exec(r)) !== null){
-      h = lookup_hustler(res[1]);
+      var tmp = res[1]
+        .replace(/\s+/g, ' ')
+        .replace(/^([^<]+)\x20-\x20(?:<[ai]|@).*/g, '$1')
+        .trim();
+      if (tmp.indexOf('<a href') == 0) {
+        continue;
+      }
+      h = lookup_hustler(tmp);
       upgrade_hustler(h,id);
     }
   }
 })
-
 
 bounties.push({
   name: "Yahoo",
@@ -427,7 +432,7 @@ bounties.push({
       while(num--){
         upgrade_hustler(h,id);
       }
-      
+
     }
   }
 })
@@ -464,7 +469,7 @@ bounties.push({
 
 
 bounties.push({
-  name: "Paypal",
+  name: "PayPal",
   url: 'https://www.paypal.com/webapps/mpp/security-tools/wall-of-fame-honorable-mention',
   cb: function(r, id){
     var res;
@@ -475,11 +480,11 @@ bounties.push({
     }
   }
 })
- 
+
 
 var requested = bounties.length;
 var result = '';
-var aggr = '';
+var aggr = [];
 for(id=0,l=bounties.length;id<l;id++){
 
   var callback = (function(cb,id) {
@@ -487,7 +492,7 @@ for(id=0,l=bounties.length;id<l;id++){
       if (err) throw err;
       cb(res,id);
 
-      aggr += "| <a href='"+bounties[id].url+"'>"+bounties[id].name+'('+bounties[id].found+')</a> ';
+      aggr.push("<a href='"+bounties[id].url+"'>"+bounties[id].name+' ('+bounties[id].found+')</a>');
       console.log(bounties[id].name, 'found', bounties[id].found)
       if(--requested == 0) done();
     }
@@ -496,6 +501,3 @@ for(id=0,l=bounties.length;id<l;id++){
   //transport = get //bounties[id].url[4] == 's' ? https : http;
   get(bounties[id].url).asString(callback);
 }
-
-
-
