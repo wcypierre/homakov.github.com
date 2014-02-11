@@ -8,7 +8,7 @@ CSRF Tool (<a href="http://homakov.blogspot.ru/2013/05/csrf-tool.html">How it wo
 
 <input onclick="switch_auto()" type="checkbox" id="c1"><label for="c1">Auto-submit</label>
 <input onclick="switch_base()" type="checkbox" id="c2"><label for="c2">Base64 URL</label>
-<textarea rows="6" cols="100" id="curl">curl "http://homakov.blogspot.ru/2013/04/consulting.html" -H "version: HTTP/1.1" --data "key1=val&csrf_token=123qwe&hash[lol]=123"</textarea>
+<textarea rows="6" cols="100" id="curl"></textarea>
 
 <div id="form"></div></td>
 <td>
@@ -95,10 +95,14 @@ function generate_form(obj, visible){
       if(visible){
         inputs += '<tr><td>'+esc(k)+' </td><td><input onchange="update_fields();" size=100 name="'+esc(k)+'" value="'+esc(pairs[k])+'"><a href="javascript:void(0)" onclick="this.parentNode.parentNode.remove();update_fields();">x</a></td></tr>';
       }else{
-        inputs += '<input type="hidden" name="'+esc(k)+'" value="'+esc(pairs[k])+'">';
+        inputs += '<input type="hidden" name="'+esc(k)+'" value="'+esc(pairs[k])+'"><br>';
       }
     }
-    if(visible) inputs = '<table>'+inputs+'</table>';
+    if(visible){
+      inputs = '<table>'+inputs+'</table>';
+    }else{
+      inputs += '<input type="submit">'
+    }
   }
   var outform = '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form>';
   
