@@ -99,10 +99,10 @@ function generate_form(obj, visible){
       }
     }
     if(visible){
-      inputs = '<table>'+inputs+'<br><input type="submit"></table>';
+      inputs = '<table>'+inputs+'</table>';
     }
   }
-  var outform = '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'</form>';
+  var outform = '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'<input type="submit"></form>';
   
   if(visible){
     var out = '<a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=100 value="'+esc(obj.url)+'" onchange="switch_url(this.value);"><br>';
