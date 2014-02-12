@@ -34,10 +34,10 @@ done = function(){
       handle = '<a href="https://twitter.com/'+handle+'">@'+handle+"</a>";
     }
 
-    result += ("<tr><td>"+(i+1)+"</td><td width=''>" + handle + "</td><td>$" + hustlers[i].reward + "</td><td>" + details.join(', ') + "</td></tr>")
+    result += ("<tr><td>"+(i+1)+"</td><td width=''>" + handle + "</td><td>" + details.join(', ') + "</td></tr>")
   }
 
-  result = 'Bounty Hustlers [last update '+new Date +'] [aggregated from '+aggr.join(' | ')+']<br><table border=1><tr><td>#</td><td width=200>Handle</td><td width=100>Cash Reward</td><td>Bounties</td></tr>' + result + '</table>';
+  result = 'Bounty Hustlers [last update '+new Date +'] [aggregated from '+aggr.join(' | ')+']<br><table border=1><tr><td>#</td><td width=200>Handle</td><td>Bounties</td></tr>' + result + '</table>';
   fs.writeFile("../high-lightning-427/hustlers.html", result, function(err) {
     if(err) {
         console.log(err);
