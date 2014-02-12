@@ -10,9 +10,12 @@ CSRF Tool (<a href="http://homakov.blogspot.ru/2013/05/csrf-tool.html">How it wo
 <input onclick="switch_base()" type="checkbox" id="c2"><label for="c2">Base64 URL</label>
 <textarea rows="6" cols="100" id="curl">curl 'hi' --data 'x=1'</textarea>
 
-<div id="form"></div></td>
+<div id="form"></div>
+<div id="tabs"></div>
+
+</td>
 <td>
-<iframe id="postme" seamless style="width:600px;height:500px;" src="data:,i am target iframe"></iframe>
+<iframe id="postme" seamless style="width:600px;height:500px;" src="data:,target iframe"></iframe>
 </td>
 </tr></table>
 
@@ -78,6 +81,20 @@ function switch_base(){
   dump_hash();
 }
 
+function save_tab(){
+  localStorage[form_obj.url] = location.hash;
+  load_tabs();
+}
+
+function load_tabs(){
+  var html = '';
+  for(var name in localStorage){
+    html += "<a href=\"javascript:location.hash=localStorage['" +
+    name+"']'\">"+name+"</a> <a href=\"javascript:delete localStorage['"+name+"'];load_tabs();\">[X]</a>"
+  }
+  document.getElementById('tabs').innerHTML = html;
+}
+
 function get_inputs(){
   return genform.getElementsByTagName('input');
 }
@@ -106,7 +123,7 @@ function generate_form(obj, visible){
   
   if(visible){
     var out = '<a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=100 value="'+esc(obj.url)+'" onchange="switch_url(this.value);"><br>';
-    out += '<input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe"><input type="submit" onclick="return no_ref();" value="No Referrer"> | <input type="submit" value="HTML" onclick="postme.location=(\'data:,\'+get_html())">';
+    out += '<input type="submit" onclick="return submit_to(\'_blank\')" value="New window"><input type="submit" onclick="return submit_to(\'_top\')" value="This window"><input type="submit" onclick="return submit_to(\'postme\')" value="Iframe"><input type="submit" onclick="return no_ref();" value="No Referrer"> | <input type="submit" value="HTML" onclick="postme.location=(\'data:,\'+get_html())"> <input type="submit" onclick="save_tab()" value="Save">';
     out += '<div><input id="new_name" placeholder="name"> = <input id="new_value" placeholder="value"> <a href="javascript:update_fields(1);">add<a></div>';
 
     out += '<div>'+outform+'</div>';
@@ -184,8 +201,7 @@ function update_form(){
 }
 
 curl.onchange = parse_curl;
-
-window.onload = function(){
+load_hash = function(){
   if(location.hash){
     //lets load CSRF template
     curl.value = '';
@@ -197,7 +213,6 @@ window.onload = function(){
     }
     form_obj = JSON.parse(str);
 
-    // shame on you, asintsov and cyberpank!
     if(form_obj.url.substr(0,4) != 'http') form_obj.url = 'http://yo.yo';
     if(['POST','GET'].indexOf(form_obj.method) == -1) form_obj.method = 'POST';
 
@@ -211,7 +226,10 @@ window.onload = function(){
     //demo
     parse_curl();
   }
+  load_tabs();
 }
+
+window.onload = load_hash 
 </script>
 
 <style>
