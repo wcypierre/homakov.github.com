@@ -89,8 +89,7 @@ function save_tab(){
 function load_tabs(){
   var html = '';
   for(var name in localStorage){
-    html += "<a href=\"javascript:location.hash=localStorage['" +
-    name+"']'\">"+name+"</a> <a href=\"javascript:delete localStorage['"+name+"'];load_tabs();\">[X]</a>"
+    html += "<a href='"+localStorage[name]+"'>"+name+"</a> <a href=\"javascript:delete localStorage['"+name+"'];load_tabs();\">[X]</a><br>"
   }
   document.getElementById('tabs').innerHTML = html;
 }
@@ -200,7 +199,6 @@ function update_form(){
   dump_hash();
 }
 
-curl.onchange = parse_curl;
 load_hash = function(){
   if(location.hash){
     //lets load CSRF template
@@ -229,7 +227,9 @@ load_hash = function(){
   load_tabs();
 }
 
-window.onload = load_hash 
+window.onload = load_hash; 
+curl.onchange = parse_curl;
+onhashchange = load_hash;
 </script>
 
 <style>
