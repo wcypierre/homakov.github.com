@@ -24,7 +24,7 @@ function generate(){
     cache[cache_key] = true;
 
     var hdr = headers_to_hash(request.headers, default_headers)
-    hdr = hdr.length ? to_json(hdr) : '';
+    hdr = hdr.length ? to_json(hdr) : '{}';
 
     var body = '"'+((request.postData && request.postData.text) ? request.postData.text : '')+'"';
 
@@ -59,6 +59,28 @@ function headers_to_hash(headers, default_headers){
 
 <textarea raws=40 cols=80 onchange="generate();" id="har"></textarea><br>
 <a href="javascript:whitelist_domains=prompt('Comma separated').split(',');generate();">Whitelist domains</a>
+
+<pre>
+var request = require('request');
+
+function run(method, url, body, new_headers, expect){
+  var headers = get_headers();
+  for (var n in new_headers) { headers[n] = new_headers[n]; }
+
+  var opts = {
+    method:method,
+    url:url,
+    headers: headers,
+    body: body
+  }
+
+  request(opts, function(error, response, body) {
+    //response.statusCode
+    console.log(method, url, expect ": ", response.statusCode, body)
+  })
+}
+</pre>
+
 <pre id="out"></pre>
 
 
