@@ -5,12 +5,13 @@ function generate(){
   var cookies;
   var default_headers = headers_to_hash(entries[0].request.headers,{});
   var cache = {};
+  var whitelist_domains = [];
 
   var out="function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
   for(var i = 0; i < entries.length;i++){
     var request = entries[i].request;
 
-    if(whitelist_domains){
+    if(whitelist_domains.length){
       if(whitelist_domains.indexOf(request.url.split('/')[2]) == -1)
       	continue;
     }
@@ -54,7 +55,7 @@ function headers_to_hash(headers, default_headers){
 
 </script>
 
-<textarea raws=40 cols=80 onchange="generate();" id="har"></textarea>
+<textarea raws=40 cols=80 onchange="generate();" id="har"></textarea><br>
 <a href="javascript:whitelist_domains=prompt('Comma separated');generate();">Whitelist domains</a>
 <pre id="out"></pre>
 
