@@ -34,8 +34,8 @@ function generate(har){
   document.getElementById('out').innerHTML = out
 }
 
-function to_json(in){
-  return JSON.stringify(in, undefined, 2);
+function to_json(obj){
+  return JSON.stringify(obj, undefined, 2);
 }
 
 function headers_to_hash(headers, default_headers){
