@@ -1,12 +1,19 @@
 <script>
-function generate(har){
+function generate(){
+  var har = document.getElementById('har').value;
   var entries = JSON.parse(har).log.entries;
   var cookies;
   var default_headers = headers_to_hash(entries[0].request.headers,{});
   var cache = {};
+
   var out="function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
   for(var i = 0; i < entries.length;i++){
     var request = entries[i].request;
+
+    if(whitelist_domains){
+      if(whitelist_domains.indexOf(request.url.split('/')[2]) == -1)
+      	continue;
+    }
 
     var hdr = headers_to_hash(request.headers, default_headers)
     hdr = hdr.length ? to_json(hdr) : '';
@@ -18,7 +25,7 @@ function generate(har){
     expect += " "+entries[i].response.redirectURL;
 
     var str = "run(\"" + request.method + "\",\"" + request.url + "\",\n"+
-    	body+','+hdr+",\n\""+expect+ "\");\n"
+    	body+','+hdr+",\n\""+expect+ "\");\n\n"
 
     var cache_key = request.method+" "+request.url;
     if(!cache[cache_key]){
@@ -47,7 +54,8 @@ function headers_to_hash(headers, default_headers){
 
 </script>
 
-<textarea raws=40 cols=80 onchange="generate(this.value);"></textarea>
+<textarea raws=40 cols=80 onchange="generate();" id="har"></textarea>
+<a href="javascript:whitelist_domains=prompt('Comma separated');generate();">Whitelist domains</a>
 <pre id="out"></pre>
 
 
