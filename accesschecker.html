@@ -1,11 +1,11 @@
 <script>
+var whitelist_domains = [];
+
 function generate(){
   var har = document.getElementById('har').value;
   var entries = JSON.parse(har).log.entries;
-  var cookies;
   var default_headers = headers_to_hash(entries[0].request.headers,{});
   var cache = {};
-  var whitelist_domains = [];
 
   var out="function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
   for(var i = 0; i < entries.length;i++){
