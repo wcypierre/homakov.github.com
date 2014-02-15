@@ -10,11 +10,18 @@ function generate(){
   var out="function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
   for(var i = 0; i < entries.length;i++){
     var request = entries[i].request;
+    var domain = request.url.split('/')[2];
 
     if(whitelist_domains.length){
-      if(whitelist_domains.indexOf(request.url.split('/')[2]) == -1)
+      if(whitelist_domains.indexOf(domain) == -1)
       	continue;
     }
+
+    var cache_key = request.method+" "+request.url;
+    if(cache[cache_key]){
+      continue;
+    }
+    cache[cache_key] = true;
 
     var hdr = headers_to_hash(request.headers, default_headers)
     hdr = hdr.length ? to_json(hdr) : '';
@@ -25,14 +32,9 @@ function generate(){
     if(entries[i].response.redirectURL)
     expect += " "+entries[i].response.redirectURL;
 
-    var str = "run(\"" + request.method + "\",\"" + request.url + "\",\n"+
+    out += "run(\"" + request.method + "\",\"" + request.url + "\",\n"+
     	body+','+hdr+",\n\""+expect+ "\");\n\n"
 
-    var cache_key = request.method+" "+request.url;
-    if(!cache[cache_key]){
-      out+=str;
-    }
-    cache[cache_key] = true;
   }
   document.getElementById('out').innerHTML = out
 }
@@ -56,7 +58,7 @@ function headers_to_hash(headers, default_headers){
 </script>
 
 <textarea raws=40 cols=80 onchange="generate();" id="har"></textarea><br>
-<a href="javascript:whitelist_domains=prompt('Comma separated');generate();">Whitelist domains</a>
+<a href="javascript:whitelist_domains=prompt('Comma separated').split(',');generate();">Whitelist domains</a>
 <pre id="out"></pre>
 
 
