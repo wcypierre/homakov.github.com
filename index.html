@@ -57,7 +57,7 @@ function no_ref(){
   /*
   data: urls omit referers, i have a blogpost on this
   */
-  postme.location = 'data:text/html,'+get_html();
+  location = 'data:text/html,'+get_html();
 }
 
 function switch_method(){
@@ -119,7 +119,7 @@ function generate_form(obj, visible){
       inputs = '<table>'+inputs+'</table>';
     }
   }
-  var outform = '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'<input type="submit"></form>';
+  var outform = '<form id="genform" action="'+esc(obj.url)+'" method="'+obj.method+'">'+inputs+'<input name="sbmbtn" type="submit"></form>';
   
   if(visible){
     var out = '<a id="cur_method" title="Switch?" href="javascript:switch_method()">'+obj.method+'</a> <input size=100 value="'+esc(obj.url)+'" onchange="switch_url(this.value);"><br>';
