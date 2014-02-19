@@ -16,4 +16,8 @@ window.__defineSetter__('localStorage',d)
 
 window.__defineGetter__('XMLHttpRequest',d)
 
+// you cannot open a new window to grab them
 window.__defineGetter__('open',d)
+
+// no opener trick either!
+window.__defineGetter__('opener',d)
