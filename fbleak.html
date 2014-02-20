@@ -6,7 +6,7 @@ var sr = hash.match(/signed_request=(.*?)(&|$)/)[1]
 document.write('<script src="https://graph.facebook.com/me?callback=popup&access_token='+at+'"><'+'/script>')
 
 var popup = function(data){
-  alert("Hey, "+"Signed Request "+sr+"\n"+"Access Token "+at)
+  alert(data.id+" "+data.name+"\nSigned Request = "+sr+"\n"+"Access Token = "+at)
 }
 
 </script>
