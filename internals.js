@@ -7,15 +7,14 @@
 	//some code here
 })()
 
-var d=function(){}
-var ar = ['XMLHttpRequest', 'localStorage', 'open', 'opener'];
-for(var i =0;i<ar.length;i++){
-  window.__defineGetter__(ar[i],d);
-  Object.defineProperty(window,ar[i],{configurable: false});
-} 
+var d=function(){}  
 
-var ar = ['cookie','createElement'];
-for(var i =0;i<ar.length;i++){
-  document.__defineGetter__(ar[i],d);
-  Object.defineProperty(document,ar[i],{configurable: false});
+for(var i in document){ 
+  document.__defineGetter__(i,d);
+  Object.defineProperty(document,i,{configurable: false});
+}
+
+for(var i in window){ 
+  window.__defineGetter__(i,d);
+  Object.defineProperty(window,i,{configurable: false});
 } 
