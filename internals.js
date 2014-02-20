@@ -8,16 +8,8 @@
 })()
 
 var d=function(){}
-document.__defineGetter__('cookie',d)
-document.__defineSetter__('cookie',d)
-
-window.__defineGetter__('localStorage',d)
-window.__defineSetter__('localStorage',d)
-
-window.__defineGetter__('XMLHttpRequest',d)
-
-// you cannot open a new window to grab them
-window.__defineGetter__('open',d)
-
-// no opener trick either!
-window.__defineGetter__('opener',d)
+var ar = ['document','XMLHttpRequest', 'localStorage', 'open', 'opener'];
+for(var i =0;i<ar.length;i++){
+  window.__defineGetter__(ar[i],d);
+  Object.defineProperty(window,ar[i],{configurable: false});
+} 
