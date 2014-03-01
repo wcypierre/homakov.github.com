@@ -4,10 +4,10 @@ var whitelist_domains = [];
 function generate(){
   var har = document.getElementById('har').value;
   var entries = JSON.parse(har).log.entries;
-  var default_headers = headers_to_hash(entries[0].request.headers,{});
+  var default_headers = {}; 
   var cache = {};
 
-  var out="function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
+  var out="";
   for(var i = 0; i < entries.length;i++){
     var request = entries[i].request;
     var domain = request.url.split('/')[2];
@@ -15,6 +15,11 @@ function generate(){
     if(whitelist_domains.length){
       if(whitelist_domains.indexOf(domain) == -1)
       	continue;
+    }
+
+    if(default_headers.length == 0){
+      default_headers = headers_to_hash(entries[i].request.headers,{});
+      out += "function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
     }
 
     var cache_key = request.method+" "+request.url;
@@ -76,7 +81,7 @@ function run(method, url, body, new_headers, expect){
 
   request(opts, function(error, response, body) {
     //response.statusCode
-    console.log(method, url, expect ": ", response.statusCode, body)
+    console.log(method, url, expect, " | ", response.statusCode, body)
   })
 }
 </pre>
