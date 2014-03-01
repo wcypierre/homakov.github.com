@@ -5,7 +5,8 @@ function generate(){
   var har = document.getElementById('har').value;
   var entries = JSON.parse(har).log.entries;
   var default_headers = false; 
-  var whitelist_domains = whitelist.value.split(',');
+
+  var whitelist_domains = whitelist.value == '' ? [] : whitelist.value.split(',');
   var cache = {};
   var out="";
 
