@@ -71,7 +71,7 @@ function headers_to_hash(headers, default_headers){
 </script>
 
 <textarea raws=40 cols=80 onchange="generate();" id="har"></textarea><br>
-<input onchange="generate();" size=40 placeholder="Comma separated whitelist domains" id="whitelist"><input type="checkbox" id="race"> Race condition
+<input onchange="generate();" size=40 placeholder="Comma separated whitelist domains" id="whitelist"><input type="checkbox" onchange="generate();"  id="race"> Race condition
 
 <pre>
 var request = require('request');
