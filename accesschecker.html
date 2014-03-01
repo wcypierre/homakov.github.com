@@ -6,8 +6,8 @@ function generate(){
   var entries = JSON.parse(har).log.entries;
   var default_headers = {}; 
   var cache = {};
-
   var out="";
+
   for(var i = 0; i < entries.length;i++){
     var request = entries[i].request;
     var domain = request.url.split('/')[2];
@@ -18,8 +18,9 @@ function generate(){
     }
 
     if(default_headers.length == 0){
-      default_headers = headers_to_hash(entries[i].request.headers,{});
+      default_headers = headers_to_hash(request.headers,{});
       out += "function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
+      console.log('default ',default_headers)
     }
 
     var cache_key = request.method+" "+request.url;
