@@ -5,6 +5,7 @@ function generate(){
   var har = document.getElementById('har').value;
   var entries = JSON.parse(har).log.entries;
   var default_headers = false; 
+  var whitelist_domains = whitelist.value.split(',');
   var cache = {};
   var out="";
 
@@ -17,10 +18,10 @@ function generate(){
       	continue;
     }
 
-    if(default_headers){
+    if(!default_headers){
       default_headers = headers_to_hash(request.headers,{});
       out += "function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
-      console.log('default ',default_headers)
+
     }
 
     var cache_key = request.method+" "+request.url;
@@ -64,7 +65,7 @@ function headers_to_hash(headers, default_headers){
 </script>
 
 <textarea raws=40 cols=80 onchange="generate();" id="har"></textarea><br>
-<a href="javascript:whitelist_domains=prompt('Comma separated').split(',');generate();">Whitelist domains</a>
+<input onchange="generate();"  placeholder="Comma separated whitelist domains" id=whitelist>
 
 <pre>
 var request = require('request');
