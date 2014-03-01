@@ -1,0 +1,100 @@
+<script>
+var whitelist_domains = [];
+
+function generate(){
+  var har = document.getElementById('har').value;
+  var entries = JSON.parse(har).log.entries;
+  var default_headers = false; 
+
+  var whitelist_domains = whitelist.value == '' ? [] : whitelist.value.split(',');
+  var cache = {};
+  var out="";
+
+  for(var i = 0; i < entries.length;i++){
+    var request = entries[i].request;
+    var domain = request.url.split('/')[2];
+
+    if(whitelist_domains.length){
+      if(whitelist_domains.indexOf(domain) == -1)
+      	continue;
+    }
+
+    if(!default_headers){
+      default_headers = headers_to_hash(request.headers,{});
+      out += "function get_headers(){return "+JSON.stringify(default_headers, undefined, 2)+"}\n\n";
+
+    }
+
+    var cache_key = request.method+" "+request.url;
+    if(cache[cache_key]){
+      continue;
+    }
+    cache[cache_key] = true;
+
+    var hdr = headers_to_hash(request.headers, default_headers)
+    hdr = hdr.length ? to_json(hdr) : '{}';
+
+    var body = '"'+((request.postData && request.postData.text) ? request.postData.text : '')+'"';
+
+    var expect = entries[i].response.status;
+    if(entries[i].response.redirectURL)
+    expect += " "+entries[i].response.redirectURL;
+    command = "run(\"" + request.method + "\",\"" + request.url + "\",\n"+
+      body+','+hdr+",\n\""+expect+ "\");\n\n";
+
+    if(race.checked){
+      "for(var i=0;i<5;i++){"+command+"}\n"
+    }
+
+    out += command; 
+
+  }
+  document.getElementById('out').innerHTML = out
+}
+
+function to_json(obj){
+  return JSON.stringify(obj, undefined, 2);
+}
+
+function headers_to_hash(headers, default_headers){
+  var back = {}
+  for(var i = 0;i<headers.length;i++){
+  	if(default_headers[headers[i].name] && default_headers[headers[i].name] == headers[i].value){
+  	  continue;
+  	}
+
+    back[headers[i].name] = headers[i].value;
+  }
+  return back;
+}
+
+</script>
+
+<textarea raws=40 cols=80 onchange="generate();" id="har"></textarea><br>
+<input onchange="generate();" size=40 placeholder="Comma separated whitelist domains" id="whitelist"><input type="checkbox" id="race"> Race condition
+
+<pre>
+var request = require('request');
+
+function run(method, url, body, new_headers, expect){
+  var headers = get_headers();
+  for (var n in new_headers) { headers[n] = new_headers[n]; }
+
+  var opts = {
+    method:method,
+    url:url,
+    headers: headers,
+    body: body
+  }
+
+  request(opts, function(error, response, body) {
+    //response.statusCode
+    console.log(method, url, expect, " | ", response.statusCode, body.substr(1000))
+  })
+}
+</pre>
+
+<pre id="out"></pre>
+
+
+
