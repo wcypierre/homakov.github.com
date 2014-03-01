@@ -38,12 +38,12 @@ function generate(){
 
     var expect = entries[i].response.status;
     if(entries[i].response.redirectURL) expect += " "+entries[i].response.redirectURL;
-    
+
     var command = "run(\"" + request.method + "\",\"" + request.url + "\",\n"+
-      body+','+hdr+",\n\""+expect+ "\");\n\n";
+      body+','+hdr+",\n\""+expect+ "\");\n";
 
     if(race.checked){
-      command = "for(var i=0;i<5;i++){"+command+"}\n"
+      command = "for(var i=0;i<5;i++){  "+command+"}\n"
     }
 
     out += command; 
@@ -70,7 +70,7 @@ function headers_to_hash(headers, default_headers){
 
 </script>
 
-<textarea raws=40 cols=80 onchange="generate();" id="har"></textarea><br>
+<textarea placeholder="paste HAR here" raws=40 cols=80 onchange="generate();" id="har"></textarea><br>
 <input onchange="generate();" size=40 placeholder="Comma separated whitelist domains" id="whitelist"><input type="checkbox" onchange="generate();"  id="race"> Race condition
 
 <pre>
@@ -79,6 +79,8 @@ var request = require('request');
 function run(method, url, body, new_headers, expect){
   var headers = get_headers();
   for (var n in new_headers) { headers[n] = new_headers[n]; }
+
+  console.log("sent at "+process.hrtime().join(' '));
 
   var opts = {
     method:method,
