@@ -37,13 +37,13 @@ function generate(){
     var body = '"'+((request.postData && request.postData.text) ? request.postData.text : '')+'"';
 
     var expect = entries[i].response.status;
-    if(entries[i].response.redirectURL)
-    expect += " "+entries[i].response.redirectURL;
-    command = "run(\"" + request.method + "\",\"" + request.url + "\",\n"+
+    if(entries[i].response.redirectURL) expect += " "+entries[i].response.redirectURL;
+    
+    var command = "run(\"" + request.method + "\",\"" + request.url + "\",\n"+
       body+','+hdr+",\n\""+expect+ "\");\n\n";
 
     if(race.checked){
-      "for(var i=0;i<5;i++){"+command+"}\n"
+      command = "for(var i=0;i<5;i++){"+command+"}\n"
     }
 
     out += command; 
